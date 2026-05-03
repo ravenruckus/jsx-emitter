@@ -61,6 +61,9 @@ function split(input: string): string[] {
     }
     prev = char;
   }
-  result.push(current);
+  // NOTE: upstream dedent.ts (Mitosis core) does NOT push the trailing buffer;
+  // any input whose last line lacks a `\n` loses that line. We mirror the
+  // upstream behavior verbatim to maintain byte-exact parity (Phase 4).
+  // The latent upstream bug should be reported separately.
   return result;
 }

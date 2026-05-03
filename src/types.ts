@@ -306,7 +306,6 @@ type ReactFamilyTarget = 'react' | 'reactNative';
 type TargetOptions = Partial<Record<ReactFamilyTarget, Partial<ToReactOptions>>>;
 
 export type ComponentMetadata = {
-  [index: string]: any;
   httpRequests?: Record<string, string>;
   options?: TargetOptions;
   /** @deprecated Use this for React forwardRef. */

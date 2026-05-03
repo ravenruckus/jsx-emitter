@@ -1,5 +1,5 @@
 import { types } from '@babel/core';
-import { pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/lib/function';
 import { kebabCase } from 'lodash';
 import { babelTransformExpression } from './babel-transform';
 
