@@ -306,6 +306,53 @@ describe('mapRefs', () => {
     mapRefs(c, (refName) => `${refName}.current`);
     expect(c.hooks.onMount[0].code).toMatch(/soloRef\.current/);
   });
+  it('rewrites refs in a state getter and restores the `get ` prefix', () => {
+    const c = component({
+      children: [
+        node({ bindings: { ref: { code: 'myRef', type: 'single', bindingType: 'expression' } } }),
+      ],
+      state: { foo: { code: 'get foo() { return myRef; }', type: 'getter' } },
+    });
+    mapRefs(c, (refName) => `${refName}.current`);
+    expect(c.state.foo!.code).toMatch(/^get foo/);
+    expect(c.state.foo!.code).toMatch(/myRef\.current/);
+    expect(c.state.foo!.type).toBe('getter');
+  });
+  it('rewrites refs in a state method and adds no get/set prefix', () => {
+    const c = component({
+      children: [
+        node({ bindings: { ref: { code: 'myRef', type: 'single', bindingType: 'expression' } } }),
+      ],
+      state: { foo: { code: 'foo() { myRef.focus(); }', type: 'method' } },
+    });
+    mapRefs(c, (refName) => `${refName}.current`);
+    expect(c.state.foo!.code).not.toMatch(/^(get |set |function )/);
+    expect(c.state.foo!.code).toMatch(/myRef\.current\.focus/);
+    expect(c.state.foo!.type).toBe('method');
+  });
+  it('rewrites refs in a state method whose body matches SETTER and restores `set `', () => {
+    const c = component({
+      children: [
+        node({ bindings: { ref: { code: 'myRef', type: 'single', bindingType: 'expression' } } }),
+      ],
+      state: { foo: { code: 'set foo(v) { myRef.x = v; }', type: 'method' } },
+    });
+    mapRefs(c, (refName) => `${refName}.current`);
+    expect(c.state.foo!.code).toMatch(/^set foo/);
+    expect(c.state.foo!.code).toMatch(/myRef\.current\.x/);
+    expect(c.state.foo!.type).toBe('method');
+  });
+  it('rewrites refs in a state function and preserves type=function', () => {
+    const c = component({
+      children: [
+        node({ bindings: { ref: { code: 'myRef', type: 'single', bindingType: 'expression' } } }),
+      ],
+      state: { foo: { code: '() => myRef.focus()', type: 'function' } },
+    });
+    mapRefs(c, (refName) => `${refName}.current`);
+    expect(c.state.foo!.code).toMatch(/myRef\.current\.focus/);
+    expect(c.state.foo!.type).toBe('function');
+  });
 });
 
 describe('on-event helpers', () => {
