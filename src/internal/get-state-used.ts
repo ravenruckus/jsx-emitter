@@ -1,0 +1,24 @@
+import traverse from 'neotraverse/legacy';
+import type { JsonComponent } from '../types';
+
+const stateAccessRegex = /state\s*\.\s*([a-zA-Z0-9_\$]+)/;
+const allStateMatchesRegex = new RegExp(stateAccessRegex, 'g');
+
+/**
+ * Get state used in the components by reference
+ */
+export const getStateUsed = (json: JsonComponent) => {
+  const stateProperties = new Set<string>();
+  traverse(json).forEach(function (item) {
+    if (typeof item === 'string') {
+      const matches = item.match(allStateMatchesRegex);
+      if (matches) {
+        for (const match of matches) {
+          stateProperties.add(match.match(stateAccessRegex)![1]);
+        }
+      }
+    }
+  });
+
+  return stateProperties;
+};
