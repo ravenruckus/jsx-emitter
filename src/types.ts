@@ -172,9 +172,7 @@ export interface ContextSetInfo extends ContextOptions {
 
 type TargetBlockKey = 'react' | 'reactNative' | 'default';
 
-export type TargetBlock<Return> = Partial<{
-  [T in TargetBlockKey]?: Return;
-}>;
+export type TargetBlock<Return> = { [T in TargetBlockKey]?: Return };
 
 export type TargetBlockCode = TargetBlock<{
   code: string;
@@ -301,7 +299,7 @@ export type ReactServerComponentsMetadata = {
   componentType?: 'client' | 'server';
 };
 
-type ReactFamilyTarget = 'react' | 'reactNative';
+export type ReactFamilyTarget = 'react' | 'reactNative';
 
 type TargetOptions = Partial<Record<ReactFamilyTarget, Partial<ToReactOptions>>>;
 

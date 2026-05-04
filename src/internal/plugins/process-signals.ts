@@ -3,7 +3,6 @@ import generate from '@babel/generator';
 import type { Plugin } from '../../types';
 import { babelTransformExpression } from '../babel-transform';
 import { capitalize } from '../capitalize';
-import { checkIsDefined } from '../nullable';
 import { replaceNodes } from '../replace-identifiers';
 import { mapSignalType } from '../signals';
 import { createCodeProcessorPlugin } from './process-code';
@@ -55,7 +54,7 @@ export const replaceSignalSetters = ({
 };
 
 // React-target mapper, hardcoded: getter is the bare identifier; setter is `set` + capitalized name.
-const reactSignalMapper = {
+const REACT_SIGNAL_MAPPER = {
   getter: (name: string) => types.identifier(name),
   setter: (name: string) => types.identifier('set' + capitalize(name)),
 };
@@ -105,9 +104,8 @@ export const getSignalAccessPlugin =
     json: {
       pre: (x) => {
         return createCodeProcessorPlugin((_codeType, json) => (code) => {
-          const mapSignal = reactSignalMapper;
-          const nodeMaps: { from: types.Node; to: types.Node; setTo: types.Expression | undefined }[] =
-            [];
+          const mapSignal = REACT_SIGNAL_MAPPER;
+          const nodeMaps: { from: types.Node; to: types.Node; setTo: types.Expression }[] = [];
 
           for (const propName in json.props) {
             if (json.props[propName].propertyType === 'reactive') {
@@ -182,21 +180,9 @@ export const getSignalAccessPlugin =
             }
           }
 
-          const filteredNodeMaps = nodeMaps.filter(
-            (
-              x,
-            ): x is {
-              from: types.Node;
-              to: types.Node;
-              setTo: types.Expression;
-            } => checkIsDefined(x.setTo),
-          );
           // Run setter replacement first; otherwise the getter rewrite would consume the LHS access first.
-          if (filteredNodeMaps.length) {
-            code = replaceSignalSetters({ code, nodeMaps: filteredNodeMaps });
-          }
-
           if (nodeMaps.length) {
+            code = replaceSignalSetters({ code, nodeMaps });
             code = replaceNodes({ code, nodeMaps });
           }
 

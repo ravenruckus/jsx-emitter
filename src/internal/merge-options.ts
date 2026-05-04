@@ -1,4 +1,4 @@
-import type { BaseTranspilerOptions, JsonComponent } from '../types';
+import type { BaseTranspilerOptions, JsonComponent, ReactFamilyTarget } from '../types';
 import { getSignalAccessPlugin, getSignalTypePlugin } from './plugins/process-signals';
 import { processTargetBlocks } from './plugins/process-target-blocks';
 
@@ -25,25 +25,29 @@ export const mergeOptions = <T extends BaseTranspilerOptions>(
   };
 };
 
-const TARGET = 'react' as const;
-
 /**
  * Layers user/extra/metadata overrides on top of generator defaults and prefixes
  * the React-target default plugins (target-blocks substitution, signal-type
  * stripping, signal-access rewriting) onto the plugin pipeline.
+ *
+ * `target` selects which `useMetadata.options[...]` slot is read. Defaults to
+ * `'react'`; the React Native flow passes `'reactNative'` so author overrides
+ * under that key are preserved (see upstream merge-options.ts behavior).
  */
 export const initializeOptions = <T extends BaseTranspilerOptions>({
+  target = 'react',
   component,
   defaults,
   userOptions,
   extra,
 }: {
+  target?: ReactFamilyTarget;
   component: JsonComponent;
   defaults: T;
   userOptions?: Partial<T>;
   extra?: Partial<T>;
 }): T & { plugins: NonNullable<T['plugins']> } => {
-  const metadataOverrides = component.meta?.useMetadata?.options?.[TARGET] as
+  const metadataOverrides = component.meta?.useMetadata?.options?.[target] as
     | Partial<T>
     | undefined;
 

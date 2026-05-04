@@ -114,4 +114,40 @@ describe('initializeOptions', () => {
     // metadataOverrides wins (last in the merge chain)
     expect(options.type).toBe('native');
   });
+
+  it('reads useMetadata.options.reactNative when target=reactNative', () => {
+    const json = baseComponent({
+      meta: {
+        useMetadata: {
+          options: {
+            react: { stateType: 'useState' },
+            reactNative: { stateType: 'variables' },
+          },
+        },
+      },
+    });
+    const options = initializeOptions({
+      target: 'reactNative',
+      component: json,
+      defaults: { ...reactDefaults },
+    });
+    expect(options.stateType).toBe('variables');
+  });
+
+  it('ignores useMetadata.options.reactNative when target defaults to react', () => {
+    const json = baseComponent({
+      meta: {
+        useMetadata: {
+          options: {
+            reactNative: { stateType: 'variables' },
+          },
+        },
+      },
+    });
+    const options = initializeOptions({
+      component: json,
+      defaults: { ...reactDefaults },
+    });
+    expect(options.stateType).toBe('useState');
+  });
 });

@@ -3,6 +3,7 @@
     "target": "ES2020",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    // ES2021 required: String.prototype.replaceAll is used in src/internal/plugins/process-target-blocks.ts
     "lib": ["ES2021"],
     "strict": true,
     "noUnusedLocals": true,

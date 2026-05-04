@@ -13,6 +13,7 @@ export const runPreJsonPlugins = ({
   for (const plugin of plugins) {
     const preFunction = plugin(options).json?.pre;
     if (preFunction) {
+      // Upstream parity: each plugin sees the ORIGINAL json; last return wins.
       useJson = preFunction(json) || json;
     }
   }
@@ -32,6 +33,7 @@ export const runPostJsonPlugins = ({
   for (const plugin of plugins) {
     const postFunction = plugin(options).json?.post;
     if (postFunction) {
+      // Upstream parity: each plugin sees the ORIGINAL json; last return wins.
       useJson = postFunction(json) || json;
     }
   }
