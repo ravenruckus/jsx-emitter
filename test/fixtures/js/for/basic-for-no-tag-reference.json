@@ -1,0 +1,149 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "name": {
+      "code": "'VincentW'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "TagName": {
+      "code": "'div'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "tag": {
+      "code": "'span'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "TagNameGetter": {
+      "code": "get TagNameGetter() {\n  return 'span';\n}",
+      "type": "getter"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "state.TagNameGetter",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {
+            "_text": "\n      Hello "
+          },
+          "bindings": {},
+          "children": []
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "state.tag",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {},
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "_text": {
+                  "code": "state.name",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "For",
+          "meta": {},
+          "scope": {
+            "forName": "action"
+          },
+          "properties": {},
+          "bindings": {
+            "each": {
+              "code": "props.actions",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "state.TagName",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {},
+              "children": [
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "action.icon",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {},
+                  "bindings": {},
+                  "children": []
+                },
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "span",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {},
+                  "bindings": {},
+                  "children": [
+                    {
+                      "@type": "@builder.io/mitosis/node",
+                      "name": "div",
+                      "meta": {},
+                      "scope": {},
+                      "properties": {},
+                      "bindings": {
+                        "_text": {
+                          "code": "action.text",
+                          "bindingType": "expression",
+                          "type": "single"
+                        }
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyBasicForNoTagRefComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

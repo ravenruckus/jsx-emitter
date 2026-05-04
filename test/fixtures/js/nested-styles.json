@@ -1,0 +1,48 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "css": {
+          "code": "{\n  display: 'flex',\n  '--bar': 'red',\n  color: 'var(--bar)',\n  '@media (max-width: env(--mobile))': {\n    display: 'block'\n  },\n  '&:hover': {\n    display: 'flex'\n  },\n  ':active': {\n    display: 'inline'\n  },\n  '.nested-selector': {\n    display: 'grid'\n  },\n  '.nested-selector:hover': {\n    display: 'block'\n  },\n  '&.nested-selector:active': {\n    display: 'inline-block'\n  }\n}",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {
+            "_text": "\n      Hello world\n    "
+          },
+          "bindings": {},
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "NestedStyles",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "clsx": "clsx"
+      },
+      "path": "clsx",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "buttonClasses": {
+      "code": "get buttonClasses() {\n  return clsx('px-4 py-2 rounded transition-colors', {\n    'bg-blue-500 hover:bg-blue-600 text-white': props.type === 'primary',\n    'bg-gray-300 hover:bg-gray-400 text-black': props.type === 'secondary'\n  });\n}",
+      "type": "getter"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "button",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "class": {
+          "code": "state.buttonClasses",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "onClick": {
+          "code": "props.onClick()",
+          "bindingType": "function",
+          "type": "single"
+        }
+      },
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "_text": {
+              "code": "props.children",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "Button",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "types": [
+    "type ButtonType = 'primary' | 'secondary'",
+    "interface ButtonProps {\n  type: ButtonType;\n  onClick: () => void;\n  children: any;\n}"
+  ],
+  "propsTypeRef": "ButtonProps"
+}

@@ -1,0 +1,92 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "MyComp": "default"
+      },
+      "path": "./my-component.lite",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "MyComp",
+          "meta": {},
+          "scope": {},
+          "properties": {
+            "class": "test",
+            "className": "test2"
+          },
+          "bindings": {},
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "_text": "\n        Hello! I can run in React, Vue, Solid, or Liquid!\n      "
+              },
+              "bindings": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {
+            "class": "test2 test"
+          },
+          "bindings": {
+            "css": {
+              "code": "{\n  padding: '10px'\n}",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "_text": "\n        Hello! I can run in React, Vue, Solid, or Liquid!\n      "
+              },
+              "bindings": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyBasicComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

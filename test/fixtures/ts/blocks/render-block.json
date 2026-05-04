@@ -1,0 +1,479 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "TARGET": "TARGET"
+      },
+      "path": "../../constants/target.js",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "BuilderContextInterface": "BuilderContextInterface",
+        "RegisteredComponent": "RegisteredComponent"
+      },
+      "path": "../../context/types.js",
+      "importKind": "type"
+    },
+    {
+      "imports": {
+        "evaluate": "evaluate"
+      },
+      "path": "../../functions/evaluate.js",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "extractTextStyles": "extractTextStyles"
+      },
+      "path": "../../functions/extract-text-styles.js",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "getBlockActions": "getBlockActions"
+      },
+      "path": "../../functions/get-block-actions.js",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "getBlockComponentOptions": "getBlockComponentOptions"
+      },
+      "path": "../../functions/get-block-component-options.js",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "getBlockProperties": "getBlockProperties"
+      },
+      "path": "../../functions/get-block-properties.js",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "getBlockTag": "getBlockTag"
+      },
+      "path": "../../functions/get-block-tag.js",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "getProcessedBlock": "getProcessedBlock"
+      },
+      "path": "../../functions/get-processed-block.js",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "getReactNativeBlockStyles": "getReactNativeBlockStyles"
+      },
+      "path": "../../functions/get-react-native-block-styles.js",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "BuilderBlock": "BuilderBlock"
+      },
+      "path": "../../types/builder-block.js",
+      "importKind": "type"
+    },
+    {
+      "imports": {
+        "Nullable": "Nullable"
+      },
+      "path": "../../types/typescript.js",
+      "importKind": "type"
+    },
+    {
+      "imports": {
+        "BlockStyles": "default"
+      },
+      "path": "./block-styles.lite",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "isEmptyHtmlElement": "isEmptyHtmlElement"
+      },
+      "path": "./render-block.helpers.js",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "RenderComponentWithContext": "default"
+      },
+      "path": "./render-component-with-context.lite",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "RenderComponentProps": "RenderComponentProps"
+      },
+      "path": "./render-component.lite",
+      "importKind": "type"
+    },
+    {
+      "imports": {
+        "RenderComponent": "default"
+      },
+      "path": "./render-component.lite",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "RenderRepeatedBlock": "default"
+      },
+      "path": "./render-repeated-block.lite",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "RepeatData": "RepeatData"
+      },
+      "path": "./types.js",
+      "importKind": "type"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "component": {
+      "code": "get component() {\n  const componentName = getProcessedBlock({\n    block: props.block,\n    state: props.context.state,\n    context: props.context.context,\n    shouldEvaluateBindings: false\n  }).component?.name;\n\n  if (!componentName) {\n    return null;\n  }\n\n  const ref = props.context.registeredComponents[componentName];\n\n  if (!ref) {\n    // TODO: Public doc page with more info about this message\n    console.warn(`\n          Could not find a registered component named \"${componentName}\". \n          If you registered it, is the file that registered it imported by the file that needs to render it?`);\n    return undefined;\n  } else {\n    return ref;\n  }\n}",
+      "type": "getter"
+    },
+    "tag": {
+      "code": "get tag() {\n  return getBlockTag(state.useBlock);\n}",
+      "type": "getter"
+    },
+    "useBlock": {
+      "code": "get useBlock() {\n  return state.repeatItemData ? props.block : getProcessedBlock({\n    block: props.block,\n    state: props.context.state,\n    context: props.context.context,\n    shouldEvaluateBindings: true\n  });\n}",
+      "type": "getter"
+    },
+    "actions": {
+      "code": "get actions() {\n  return getBlockActions({\n    block: state.useBlock,\n    state: props.context.state,\n    context: props.context.context\n  });\n}",
+      "type": "getter"
+    },
+    "attributes": {
+      "code": "get attributes() {\n  const blockProperties = getBlockProperties(state.useBlock);\n  return { ...blockProperties,\n    ...(TARGET === 'reactNative' ? {\n      style: getReactNativeBlockStyles({\n        block: state.useBlock,\n        context: props.context,\n        blockStyles: blockProperties.style\n      })\n    } : {})\n  };\n}",
+      "type": "getter"
+    },
+    "shouldWrap": {
+      "code": "get shouldWrap() {\n  return !state.component?.noWrap;\n}",
+      "type": "getter"
+    },
+    "renderComponentProps": {
+      "code": "get renderComponentProps() {\n  return {\n    blockChildren: state.useChildren,\n    componentRef: state.component?.component,\n    componentOptions: { ...getBlockComponentOptions(state.useBlock),\n\n      /**\n       * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then\n       * they are provided to the component itself directly.\n       */\n      ...(state.shouldWrap ? {} : {\n        attributes: { ...state.attributes,\n          ...state.actions\n        }\n      }),\n      customBreakpoints: state.childrenContext?.content?.meta?.breakpoints\n    },\n    context: state.childrenContext\n  };\n}",
+      "type": "getter"
+    },
+    "useChildren": {
+      "code": "get useChildren() {\n  // TO-DO: When should `canHaveChildren` dictate rendering?\n  // This is currently commented out because some Builder components (e.g. Box) do not have `canHaveChildren: true`,\n  // but still receive and need to render children.\n  // return state.componentInfo?.canHaveChildren ? state.useBlock.children : [];\n  return state.useBlock.children ?? [];\n}",
+      "type": "getter"
+    },
+    "childrenWithoutParentComponent": {
+      "code": "get childrenWithoutParentComponent() {\n  /**\n   * When there is no `componentRef`, there might still be children that need to be rendered. In this case,\n   * we render them outside of `componentRef`.\n   * NOTE: We make sure not to render this if `repeatItemData` is non-null, because that means we are rendering an array of\n   * blocks, and the children will be repeated within those blocks.\n   */\n  const shouldRenderChildrenOutsideRef = !state.component?.component && !state.repeatItemData;\n  return shouldRenderChildrenOutsideRef ? state.useChildren : [];\n}",
+      "type": "getter"
+    },
+    "repeatItemData": {
+      "code": "get repeatItemData() {\n  /**\n   * we don't use `state.useBlock` here because the processing done within its logic includes evaluating the block's bindings,\n   * which will not work if there is a repeat.\n   */\n  const {\n    repeat,\n    ...blockWithoutRepeat\n  } = props.block;\n\n  if (!repeat?.collection) {\n    return undefined;\n  }\n\n  const itemsArray = evaluate({\n    code: repeat.collection,\n    state: props.context.state,\n    context: props.context.context\n  });\n\n  if (!Array.isArray(itemsArray)) {\n    return undefined;\n  }\n\n  const collectionName = repeat.collection.split('.').pop();\n  const itemNameToUse = repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');\n  const repeatArray = itemsArray.map<RepeatData>((item, index) => ({\n    context: { ...props.context,\n      state: { ...props.context.state,\n        $index: index,\n        $item: item,\n        [itemNameToUse]: item,\n        [`$${itemNameToUse}Index`]: index\n      }\n    },\n    block: blockWithoutRepeat\n  }));\n  return repeatArray;\n}",
+      "type": "getter"
+    },
+    "inheritedTextStyles": {
+      "code": "get inheritedTextStyles() {\n  if (TARGET !== 'reactNative') {\n    return {};\n  }\n\n  const styles = getReactNativeBlockStyles({\n    block: state.useBlock,\n    context: props.context,\n    blockStyles: state.attributes.style\n  });\n  return extractTextStyles(styles);\n}",
+      "type": "getter"
+    },
+    "childrenContext": {
+      "code": "get childrenContext() {\n  return {\n    apiKey: props.context.apiKey,\n    state: props.context.state,\n    content: props.context.content,\n    context: props.context.context,\n    registeredComponents: props.context.registeredComponents,\n    inheritedStyles: state.inheritedTextStyles\n  };\n}",
+      "type": "getter"
+    },
+    "renderComponentTag": {
+      "code": "get renderComponentTag() {\n  if (TARGET === 'reactNative') {\n    return RenderComponentWithContext;\n  } else if (TARGET === 'vue3') {\n    // vue3 expects a string for the component tag\n    return 'RenderComponent';\n  } else {\n    return RenderComponent;\n  }\n}",
+      "type": "getter"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "Show",
+      "meta": {
+        "else": {
+          "@type": "@builder.io/mitosis/node",
+          "name": "state.renderComponentTag",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "state.renderComponentProps": {
+              "code": "state.renderComponentProps",
+              "type": "spread",
+              "spreadType": "normal"
+            }
+          },
+          "children": []
+        }
+      },
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "when": {
+          "code": "state.shouldWrap",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "Show",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "when": {
+              "code": "isEmptyHtmlElement(state.tag)",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "state.tag",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "state.attributes": {
+                  "code": "state.attributes",
+                  "type": "spread",
+                  "spreadType": "normal"
+                },
+                "state.actions": {
+                  "code": "state.actions",
+                  "type": "spread",
+                  "spreadType": "normal"
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "Show",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "when": {
+              "code": "!isEmptyHtmlElement(state.tag) && state.repeatItemData",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "For",
+              "meta": {},
+              "scope": {
+                "forName": "data",
+                "indexName": "index"
+              },
+              "properties": {},
+              "bindings": {
+                "each": {
+                  "code": "state.repeatItemData",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": [
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "RenderRepeatedBlock",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {},
+                  "bindings": {
+                    "key": {
+                      "code": "index",
+                      "bindingType": "expression",
+                      "type": "single"
+                    },
+                    "repeatContext": {
+                      "code": "data.context",
+                      "bindingType": "expression",
+                      "type": "single"
+                    },
+                    "block": {
+                      "code": "data.block",
+                      "bindingType": "expression",
+                      "type": "single"
+                    }
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "Show",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "when": {
+              "code": "!isEmptyHtmlElement(state.tag) && !state.repeatItemData",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "state.tag",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "state.attributes": {
+                  "code": "state.attributes",
+                  "type": "spread",
+                  "spreadType": "normal"
+                },
+                "state.actions": {
+                  "code": "state.actions",
+                  "type": "spread",
+                  "spreadType": "normal"
+                }
+              },
+              "children": [
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "state.renderComponentTag",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {},
+                  "bindings": {
+                    "state.renderComponentProps": {
+                      "code": "state.renderComponentProps",
+                      "type": "spread",
+                      "spreadType": "normal"
+                    }
+                  },
+                  "children": []
+                },
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "For",
+                  "meta": {},
+                  "scope": {
+                    "forName": "child"
+                  },
+                  "properties": {},
+                  "bindings": {
+                    "each": {
+                      "code": "state.childrenWithoutParentComponent",
+                      "bindingType": "expression",
+                      "type": "single"
+                    }
+                  },
+                  "children": [
+                    {
+                      "@type": "@builder.io/mitosis/node",
+                      "name": "RenderBlock",
+                      "meta": {},
+                      "scope": {},
+                      "properties": {},
+                      "bindings": {
+                        "key": {
+                          "code": "'render-block-' + child.id",
+                          "bindingType": "expression",
+                          "type": "single"
+                        },
+                        "block": {
+                          "code": "child",
+                          "bindingType": "expression",
+                          "type": "single"
+                        },
+                        "context": {
+                          "code": "state.childrenContext",
+                          "bindingType": "expression",
+                          "type": "single"
+                        }
+                      },
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "For",
+                  "meta": {},
+                  "scope": {
+                    "forName": "child"
+                  },
+                  "properties": {},
+                  "bindings": {
+                    "each": {
+                      "code": "state.childrenWithoutParentComponent",
+                      "bindingType": "expression",
+                      "type": "single"
+                    }
+                  },
+                  "children": [
+                    {
+                      "@type": "@builder.io/mitosis/node",
+                      "name": "BlockStyles",
+                      "meta": {},
+                      "scope": {},
+                      "properties": {},
+                      "bindings": {
+                        "key": {
+                          "code": "'block-style-' + child.id",
+                          "bindingType": "expression",
+                          "type": "single"
+                        },
+                        "block": {
+                          "code": "child",
+                          "bindingType": "expression",
+                          "type": "single"
+                        },
+                        "context": {
+                          "code": "state.childrenContext",
+                          "bindingType": "expression",
+                          "type": "single"
+                        }
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "RenderBlock",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "types": [
+    "export type RenderBlockProps = {\n  block: BuilderBlock;\n  context: BuilderContextInterface;\n}"
+  ],
+  "propsTypeRef": "RenderBlockProps"
+}

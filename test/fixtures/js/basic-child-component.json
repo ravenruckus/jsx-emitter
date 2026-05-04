@@ -1,0 +1,138 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "MyBasicOnMountUpdateComponent": "default"
+      },
+      "path": "./basic-onMount-update.raw",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "MyBasicOutputsComponent": "default"
+      },
+      "path": "./basic-outputs.raw",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "MyBasicComponent": "default"
+      },
+      "path": "./basic.raw",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "name": {
+      "code": "'Steve'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "dev": {
+      "code": "'PatrickJS'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "log": {
+      "code": "function log(message) {\n  console.log(message);\n}",
+      "type": "function"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "MyBasicComponent",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "id": {
+              "code": "state.dev",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {},
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "MyBasicOnMountUpdateComponent",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "hi": {
+                  "code": "state.name",
+                  "bindingType": "expression",
+                  "type": "single"
+                },
+                "bye": {
+                  "code": "state.dev",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": []
+            },
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "MyBasicOutputsComponent",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "message": "Test"
+              },
+              "bindings": {
+                "onMessageChange": {
+                  "code": "state.name = name",
+                  "arguments": [
+                    "name"
+                  ],
+                  "bindingType": "function",
+                  "type": "single"
+                },
+                "onEvent": {
+                  "code": "state.log('Test')",
+                  "bindingType": "function",
+                  "type": "single"
+                }
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyBasicChildComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

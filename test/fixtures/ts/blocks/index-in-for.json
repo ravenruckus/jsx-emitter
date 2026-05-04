@@ -1,0 +1,137 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "todos": {
+      "code": "[{\n  id: 1,\n  completed: false\n}, {\n  id: 2,\n  completed: false\n}]",
+      "type": "property",
+      "propertyType": "normal"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "For",
+          "meta": {},
+          "scope": {
+            "forName": "todo"
+          },
+          "properties": {},
+          "bindings": {
+            "each": {
+              "code": "state.todos",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {},
+              "children": [
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "For",
+                  "meta": {},
+                  "scope": {
+                    "forName": "todo",
+                    "indexName": "index"
+                  },
+                  "properties": {},
+                  "bindings": {
+                    "each": {
+                      "code": "state.todos",
+                      "bindingType": "expression",
+                      "type": "single"
+                    }
+                  },
+                  "children": [
+                    {
+                      "@type": "@builder.io/mitosis/node",
+                      "name": "input",
+                      "meta": {},
+                      "scope": {},
+                      "properties": {
+                        "type": "checkbox"
+                      },
+                      "bindings": {
+                        "checked": {
+                          "code": "todo.completed",
+                          "bindingType": "expression",
+                          "type": "single"
+                        },
+                        "key": {
+                          "code": "todo.id + '-' + index",
+                          "bindingType": "expression",
+                          "type": "single"
+                        },
+                        "value": {
+                          "code": "index",
+                          "bindingType": "expression",
+                          "type": "single"
+                        },
+                        "foo": {
+                          "code": "{\n  bar: 1 + index\n}",
+                          "bindingType": "expression",
+                          "type": "single"
+                        },
+                        "onX": {
+                          "code": "{\n  console.log('onX');\n}",
+                          "bindingType": "function",
+                          "type": "single"
+                        },
+                        "onClick": {
+                          "code": "{\n  console.log('clicked', event);\n  state.todos[index].completed = !state.todos[0].completed;\n}",
+                          "arguments": [
+                            "event"
+                          ],
+                          "bindingType": "function",
+                          "type": "single"
+                        },
+                        "onChange": {
+                          "code": "{\n  console.log('this is todo item: ', index);\n  const index = state.todos.findIndex(t => t.id === todo.id);\n  state.todos[index].completed = event.target.checked;\n}",
+                          "arguments": [
+                            "event"
+                          ],
+                          "bindingType": "function",
+                          "type": "single"
+                        }
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

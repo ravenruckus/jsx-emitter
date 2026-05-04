@@ -1,0 +1,56 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "textarea",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "props.attributes": {
+          "code": "props.attributes",
+          "type": "spread",
+          "spreadType": "normal"
+        },
+        "placeholder": {
+          "code": "props.placeholder",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "name": {
+          "code": "props.name",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "value": {
+          "code": "props.value",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "defaultValue": {
+          "code": "props.defaultValue",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": []
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "Textarea",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

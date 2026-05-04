@@ -1,0 +1,69 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "classState": {
+      "code": "'testClassName'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "styleState": {
+      "code": "{\n  color: 'red'\n}",
+      "type": "property",
+      "propertyType": "normal"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "class": {
+          "code": "state.classState",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "css": {
+          "code": "{\n  padding: '10px'\n}",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "style": {
+          "code": "state.styleState",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {
+            "_text": "\n      Hello! I can run in React, Vue, Solid, or Liquid!\n    "
+          },
+          "bindings": {},
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyBasicComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

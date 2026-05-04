@@ -1,0 +1,254 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {
+    "inputRef": {
+      "argument": "null"
+    },
+    "inputNoArgRef": {
+      "argument": "null"
+    }
+  },
+  "state": {
+    "name": {
+      "code": "'PatrickJS'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "onBlur": {
+      "code": "function onBlur() {\n  // Maintain focus\n  inputRef.focus();\n}",
+      "type": "function"
+    },
+    "lowerCaseName": {
+      "code": "function lowerCaseName() {\n  return state.name.toLowerCase();\n}",
+      "type": "function"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "Show",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "when": {
+              "code": "props.showInput",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "Fragment",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {},
+              "children": [
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "input",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {},
+                  "bindings": {
+                    "ref": {
+                      "code": "inputRef",
+                      "bindingType": "expression",
+                      "type": "single"
+                    },
+                    "css": {
+                      "code": "{\n  color: 'red'\n}",
+                      "bindingType": "expression",
+                      "type": "single"
+                    },
+                    "value": {
+                      "code": "state.name",
+                      "bindingType": "expression",
+                      "type": "single"
+                    },
+                    "onBlur": {
+                      "code": "state.onBlur()",
+                      "arguments": [
+                        "event"
+                      ],
+                      "bindingType": "function",
+                      "type": "single"
+                    },
+                    "onChange": {
+                      "code": "state.name = event.target.value",
+                      "arguments": [
+                        "event"
+                      ],
+                      "bindingType": "function",
+                      "type": "single"
+                    }
+                  },
+                  "children": []
+                },
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "label",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {
+                    "for": "cars"
+                  },
+                  "bindings": {
+                    "ref": {
+                      "code": "inputNoArgRef",
+                      "bindingType": "expression",
+                      "type": "single"
+                    }
+                  },
+                  "children": [
+                    {
+                      "@type": "@builder.io/mitosis/node",
+                      "name": "div",
+                      "meta": {},
+                      "scope": {},
+                      "properties": {
+                        "_text": "\n            Choose a car:\n          "
+                      },
+                      "bindings": {},
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "select",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {
+                    "name": "cars",
+                    "id": "cars"
+                  },
+                  "bindings": {},
+                  "children": [
+                    {
+                      "@type": "@builder.io/mitosis/node",
+                      "name": "option",
+                      "meta": {},
+                      "scope": {},
+                      "properties": {
+                        "value": "supra"
+                      },
+                      "bindings": {},
+                      "children": [
+                        {
+                          "@type": "@builder.io/mitosis/node",
+                          "name": "div",
+                          "meta": {},
+                          "scope": {},
+                          "properties": {
+                            "_text": "GR Supra"
+                          },
+                          "bindings": {},
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "@type": "@builder.io/mitosis/node",
+                      "name": "option",
+                      "meta": {},
+                      "scope": {},
+                      "properties": {
+                        "value": "86"
+                      },
+                      "bindings": {},
+                      "children": [
+                        {
+                          "@type": "@builder.io/mitosis/node",
+                          "name": "div",
+                          "meta": {},
+                          "scope": {},
+                          "properties": {
+                            "_text": "GR 86"
+                          },
+                          "bindings": {},
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {
+            "_text": "\n      Hello\n      "
+          },
+          "bindings": {},
+          "children": []
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "_text": {
+              "code": "state.lowerCaseName()",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {
+            "_text": "! I can run in React, Qwik, Vue, Solid, or Web Component!\n    "
+          },
+          "bindings": {},
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyBasicRefComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": [],
+    "onUpdate": [
+      {
+        "code": "console.log('Received an update')",
+        "deps": "[inputRef, inputNoArgRef]",
+        "depsArray": [
+          "inputRef",
+          "inputNoArgRef"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "name": {
+      "code": "'test'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "getName": {
+      "code": "getName() {\n  if (state.name === 'a') {\n    return 'b';\n  }\n\n  return state.name;\n}",
+      "type": "method"
+    },
+    "test": {
+      "code": "get test() {\n  return 'test';\n}",
+      "type": "getter"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {
+            "_text": "Hello "
+          },
+          "bindings": {},
+          "children": []
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "_text": {
+              "code": "state.name",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {
+            "_text": "! "
+          },
+          "bindings": {},
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "TypeGetterStore",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

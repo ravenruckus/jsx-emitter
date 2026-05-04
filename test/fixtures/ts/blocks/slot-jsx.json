@@ -1,0 +1,83 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "ContentSlotCode": "default"
+      },
+      "path": "./content-slot-jsx.raw",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "ContentSlotCode",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "slotTesting": {
+              "code": "<div>Hello</div>",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [],
+          "slots": {
+            "slotTesting": [
+              {
+                "@type": "@builder.io/mitosis/node",
+                "name": "div",
+                "meta": {},
+                "scope": {},
+                "properties": {},
+                "bindings": {},
+                "children": [
+                  {
+                    "@type": "@builder.io/mitosis/node",
+                    "name": "div",
+                    "meta": {},
+                    "scope": {},
+                    "properties": {
+                      "_text": "Hello"
+                    },
+                    "bindings": {},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "SlotCode",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "types": [
+    "type Props = {\n  [key: string]: string;\n}"
+  ],
+  "propsTypeRef": "Props"
+}

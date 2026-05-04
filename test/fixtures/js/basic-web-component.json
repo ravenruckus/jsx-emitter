@@ -1,0 +1,109 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "register": "register"
+      },
+      "path": "swiper/element/bundle",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "swiper-container",
+      "meta": {},
+      "scope": {},
+      "properties": {
+        "slides-per-view": "3",
+        "navigation": "true",
+        "pagination": "true"
+      },
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "swiper-slide",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {},
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "_text": "Slide 1"
+              },
+              "bindings": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "swiper-slide",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {},
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "_text": "Slide 2"
+              },
+              "bindings": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "swiper-slide",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {},
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "_text": "Slide 3"
+              },
+              "bindings": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyBasicWebComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": [],
+    "onInit": {
+      "code": "register()"
+    }
+  }
+}

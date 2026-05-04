@@ -1,0 +1,71 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {
+    "holdValueRef": {
+      "argument": "'Patrick'"
+    }
+  },
+  "state": {
+    "handlerClick": {
+      "code": "function handlerClick(event) {\n  event.preventDefault();\n  console.log('current value', holdValueRef);\n  holdValueRef = holdValueRef + 'JS';\n}",
+      "type": "function"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "button",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "onClick": {
+              "code": "await state.handlerClick(evt)",
+              "async": true,
+              "arguments": [
+                "evt"
+              ],
+              "bindingType": "function",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "_text": "Click"
+              },
+              "bindings": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyBasicRefAssignmentComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

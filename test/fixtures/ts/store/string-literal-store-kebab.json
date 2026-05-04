@@ -1,0 +1,52 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "foo-bar": {
+      "code": "123",
+      "type": "property",
+      "propertyType": "normal"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "_text": {
+              "code": "state['foo-bar']",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "StringLiteralStore",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

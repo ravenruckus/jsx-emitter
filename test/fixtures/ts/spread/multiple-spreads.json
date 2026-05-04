@@ -1,0 +1,48 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "attrs": {
+      "code": "{\n  hello: 'world'\n}",
+      "type": "property",
+      "propertyType": "normal"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "input",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "attrs": {
+          "code": "state.attrs",
+          "type": "spread",
+          "spreadType": "normal"
+        },
+        "props": {
+          "code": "props",
+          "type": "spread",
+          "spreadType": "normal"
+        }
+      },
+      "children": []
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyBasicComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "propsTypeRef": "any"
+}

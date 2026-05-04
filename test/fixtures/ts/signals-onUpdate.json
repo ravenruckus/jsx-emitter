@@ -1,0 +1,90 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {
+        "class": "test"
+      },
+      "bindings": {
+        "css": {
+          "code": "{\n  padding: '10px'\n}",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "_text": {
+              "code": "props.id",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "_text": {
+              "code": "props.foo.value.bar.baz",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyBasicComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": [],
+    "onUpdate": [
+      {
+        "code": "console.log('props.id changed', props.id);\nconsole.log('props.foo.value.bar.baz changed', props.foo.value.bar.baz)",
+        "deps": "[props.id, props.foo.value.bar.baz]",
+        "depsArray": [
+          "props.id"
+        ]
+      }
+    ]
+  },
+  "types": [
+    "type Props = {\n  id: Signal<string>;\n  foo: Signal<{\n    bar: {\n      baz: number;\n    };\n  }>;\n}"
+  ],
+  "propsTypeRef": "Props",
+  "signals": {
+    "signalTypeImportName": "Signal"
+  },
+  "props": {
+    "foo": {
+      "propertyType": "reactive"
+    }
+  }
+}

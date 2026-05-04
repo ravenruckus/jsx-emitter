@@ -1,0 +1,118 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "Show",
+      "meta": {
+        "else": {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {},
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "_text": "else-condition-A"
+              },
+              "bindings": {},
+              "children": []
+            }
+          ]
+        }
+      },
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "when": {
+          "code": "props.conditionA",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "Show",
+          "meta": {
+            "else": {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {},
+              "children": [
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "div",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {
+                    "_text": "else-condition-B"
+                  },
+                  "bindings": {},
+                  "children": []
+                }
+              ]
+            }
+          },
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "when": {
+              "code": "!props.conditionB",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {},
+              "children": [
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "div",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {
+                    "_text": "if condition A and condition B"
+                  },
+                  "bindings": {},
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "NestedShow",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

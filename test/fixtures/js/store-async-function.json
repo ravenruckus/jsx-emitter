@@ -1,0 +1,43 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "arrowFunction": {
+      "code": "async function arrowFunction() {\n  return Promise.resolve();\n}",
+      "type": "function"
+    },
+    "namedFunction": {
+      "code": "async function namedFunction() {\n  return Promise.resolve();\n}",
+      "type": "function"
+    },
+    "fetchUsers": {
+      "code": "async function fetchUsers() {\n  return Promise.resolve();\n}",
+      "type": "function"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": []
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "StringLiteralStore",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

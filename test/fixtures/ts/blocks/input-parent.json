@@ -1,0 +1,55 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "FormInputComponent": "default"
+      },
+      "path": "./input.raw",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "handleChange": {
+      "code": "handleChange(value: string) {\n  console.log(value);\n}",
+      "type": "method"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "FormInputComponent",
+      "meta": {},
+      "scope": {},
+      "properties": {
+        "name": "kingzez",
+        "type": "text"
+      },
+      "bindings": {
+        "onChange": {
+          "code": "state.handleChange(value)",
+          "arguments": [
+            "value"
+          ],
+          "bindingType": "function",
+          "type": "single"
+        }
+      },
+      "children": []
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "Stepper",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

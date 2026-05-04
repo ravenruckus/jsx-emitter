@@ -1,0 +1,150 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "name": {
+      "code": "get name() {\n  const prefix = \"USE_TARGET_BLOCK_1\";\n  return prefix + 'foo';\n}",
+      "type": "getter"
+    },
+    "lastName": {
+      "code": "'bar'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "foo": {
+      "code": "'bar'",
+      "type": "property",
+      "propertyType": "normal"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "_text": {
+              "code": "state.name",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "UseTargetComponent",
+  "hooks": {
+    "onMount": [
+      {
+        "code": "console.log(state.foo);\nstate.foo = 'bar';\n\"USE_TARGET_BLOCK_2\"",
+        "onSSR": false
+      }
+    ],
+    "onEvent": []
+  },
+  "targetBlocks": {
+    "1": {
+      "settings": {
+        "requiresDefault": true
+      },
+      "default": {
+        "code": "'Default str'"
+      },
+      "react": {
+        "code": "123"
+      },
+      "angular": {
+        "code": "true"
+      },
+      "vue": {
+        "code": "'v'"
+      },
+      "alpine": {
+        "code": "'a'"
+      },
+      "customElement": {
+        "code": "'c'"
+      },
+      "html": {
+        "code": "'h'"
+      },
+      "liquid": {
+        "code": "'l'"
+      },
+      "lit": {
+        "code": "'li'"
+      },
+      "marko": {
+        "code": "'m'"
+      },
+      "mitosis": {
+        "code": "'mi'"
+      },
+      "preact": {
+        "code": "'p'"
+      },
+      "qwik": {
+        "code": "'q'"
+      },
+      "reactNative": {
+        "code": "'rn'"
+      },
+      "svelte": {
+        "code": "'s'"
+      },
+      "rsc": {
+        "code": "'rsc'"
+      },
+      "solid": {
+        "code": "'so'"
+      },
+      "stencil": {
+        "code": "'st'"
+      },
+      "swift": {
+        "code": "'sw'"
+      },
+      "taro": {
+        "code": "'t'"
+      },
+      "template": {
+        "code": "'te'"
+      },
+      "webcomponent": {
+        "code": "'wc'"
+      }
+    },
+    "2": {
+      "settings": {
+        "requiresDefault": false
+      },
+      "react": {
+        "code": "console.log('react');\nstate.lastName = 'baz';\nconsole.log(state.foo);\nstate.foo = 'baz'"
+      },
+      "qwik": {
+        "code": "console.log('qwik');\nstate.lastName = 'baz';\nconsole.log(state.foo);\nstate.foo = 'baz'"
+      }
+    }
+  }
+}

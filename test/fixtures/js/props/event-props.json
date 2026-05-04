@@ -1,0 +1,53 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "handleClick": {
+      "code": "handleClick() {\n  if (props.onGetVoid) {\n    props.onGetVoid();\n  }\n\n  if (props.onEnter) {\n    console.log(props.onEnter());\n  }\n\n  if (props.onPass) {\n    props.onPass('test');\n  }\n}",
+      "type": "method"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "button",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "onClick": {
+          "code": "state.handleClick()",
+          "bindingType": "function",
+          "type": "single"
+        }
+      },
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {
+            "_text": "Test"
+          },
+          "bindings": {},
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "EventPropsComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "Context1": "default"
+      },
+      "path": "@dummy/1",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "Context2": "default"
+      },
+      "path": "@dummy/2",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "Fragment",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "Fragment",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {},
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "_text": {
+                  "code": "foo.value",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {},
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "_text": "other"
+              },
+              "bindings": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {
+      "foo": {
+        "name": "Context1",
+        "path": "@dummy/1:default"
+      }
+    },
+    "set": {
+      "@dummy/1:default": {
+        "name": "Context1",
+        "value": {
+          "foo": {
+            "code": "'bar'",
+            "type": "property",
+            "propertyType": "normal"
+          },
+          "content": {
+            "code": "content() {\n  return props.content;\n}",
+            "type": "method"
+          }
+        }
+      },
+      "@dummy/2:default": {
+        "name": "Context2",
+        "value": {
+          "bar": {
+            "code": "'baz'",
+            "type": "property",
+            "propertyType": "normal"
+          }
+        }
+      }
+    }
+  },
+  "subComponents": [],
+  "name": "ComponentWithContext",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

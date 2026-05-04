@@ -1,0 +1,69 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "a": {
+      "code": "'a'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "b": {
+      "code": "'b'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "c": {
+      "code": "'c'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "d": {
+      "code": "'d'",
+      "type": "property",
+      "propertyType": "normal"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": []
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MultipleOnUpdateWithDeps",
+  "hooks": {
+    "onMount": [],
+    "onEvent": [],
+    "onUpdate": [
+      {
+        "code": "console.log('Runs when a or b changes', state.a, state.b);\n\nif (state.a === 'a') {\n  state.a = 'b';\n}",
+        "deps": "[state.a, state.b]",
+        "depsArray": [
+          "state.a",
+          "state.b"
+        ]
+      },
+      {
+        "code": "console.log('Runs when c or d changes', state.c, state.d);\n\nif (state.a === 'a') {\n  state.a = 'b';\n}",
+        "deps": "[state.c, state.d]",
+        "depsArray": [
+          "state.c",
+          "state.d"
+        ]
+      }
+    ]
+  }
+}

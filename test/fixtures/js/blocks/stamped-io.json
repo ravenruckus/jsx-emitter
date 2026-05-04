@@ -1,0 +1,362 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "kebabCase": "kebabCase",
+        "snakeCase": "snakeCase"
+      },
+      "path": "lodash",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "reviews": {
+      "code": "[]",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "name": {
+      "code": "'test'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "showReviewPrompt": {
+      "code": "false",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "kebabCaseValue": {
+      "code": "kebabCaseValue() {\n  return kebabCase('testThat');\n}",
+      "type": "method"
+    },
+    "snakeCaseValue": {
+      "code": "snakeCaseValue() {\n  return snakeCase('testThis');\n}",
+      "type": "method"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "data-user": {
+          "code": "state.name",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "button",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "onClick": {
+              "code": "state.showReviewPrompt = true",
+              "bindingType": "function",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "_text": "Write a review"
+              },
+              "bindings": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "Show",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "when": {
+              "code": "state.showReviewPrompt || 'asdf'",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "input",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "placeholder": "Email"
+              },
+              "bindings": {},
+              "children": []
+            },
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "input",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "placeholder": "Title"
+              },
+              "bindings": {
+                "css": {
+                  "code": "{\n  display: 'block'\n}",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": []
+            },
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "textarea",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "placeholder": "How was your experience?"
+              },
+              "bindings": {
+                "css": {
+                  "code": "{\n  display: 'block'\n}",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": []
+            },
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "button",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "css": {
+                  "code": "{\n  display: 'block'\n}",
+                  "bindingType": "expression",
+                  "type": "single"
+                },
+                "onClick": {
+                  "code": "{\n  ev.preventDefault();\n  state.showReviewPrompt = false;\n}",
+                  "arguments": [
+                    "ev"
+                  ],
+                  "bindingType": "function",
+                  "type": "single"
+                }
+              },
+              "children": [
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "div",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {
+                    "_text": "\n          Submit\n        "
+                  },
+                  "bindings": {},
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "For",
+          "meta": {},
+          "scope": {
+            "forName": "review",
+            "indexName": "index"
+          },
+          "properties": {},
+          "bindings": {
+            "each": {
+              "code": "state.reviews",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "$name": "Review"
+              },
+              "bindings": {
+                "key": {
+                  "code": "review.id",
+                  "bindingType": "expression",
+                  "type": "single"
+                },
+                "css": {
+                  "code": "{\n  margin: '10px',\n  padding: '10px',\n  background: 'white',\n  display: 'flex',\n  borderRadius: '5px',\n  boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',\n  WebkitFontSmoothing: 'antialiased'\n}",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": [
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "img",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {},
+                  "bindings": {
+                    "css": {
+                      "code": "{\n  height: '30px',\n  width: '30px',\n  marginRight: '10px'\n}",
+                      "bindingType": "expression",
+                      "type": "single"
+                    },
+                    "src": {
+                      "code": "review.avatar",
+                      "bindingType": "expression",
+                      "type": "single"
+                    }
+                  },
+                  "children": []
+                },
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "div",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {},
+                  "bindings": {
+                    "class": {
+                      "code": "state.showReviewPrompt ? 'bg-primary' : 'bg-secondary'",
+                      "bindingType": "expression",
+                      "type": "single"
+                    }
+                  },
+                  "children": [
+                    {
+                      "@type": "@builder.io/mitosis/node",
+                      "name": "div",
+                      "meta": {},
+                      "scope": {},
+                      "properties": {},
+                      "bindings": {},
+                      "children": [
+                        {
+                          "@type": "@builder.io/mitosis/node",
+                          "name": "div",
+                          "meta": {},
+                          "scope": {},
+                          "properties": {
+                            "_text": "N: "
+                          },
+                          "bindings": {},
+                          "children": []
+                        },
+                        {
+                          "@type": "@builder.io/mitosis/node",
+                          "name": "div",
+                          "meta": {},
+                          "scope": {},
+                          "properties": {},
+                          "bindings": {
+                            "_text": {
+                              "code": "index",
+                              "bindingType": "expression",
+                              "type": "single"
+                            }
+                          },
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "@type": "@builder.io/mitosis/node",
+                      "name": "div",
+                      "meta": {},
+                      "scope": {},
+                      "properties": {},
+                      "bindings": {},
+                      "children": [
+                        {
+                          "@type": "@builder.io/mitosis/node",
+                          "name": "div",
+                          "meta": {},
+                          "scope": {},
+                          "properties": {},
+                          "bindings": {
+                            "_text": {
+                              "code": "review.author",
+                              "bindingType": "expression",
+                              "type": "single"
+                            }
+                          },
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "@type": "@builder.io/mitosis/node",
+                      "name": "div",
+                      "meta": {},
+                      "scope": {},
+                      "properties": {},
+                      "bindings": {},
+                      "children": [
+                        {
+                          "@type": "@builder.io/mitosis/node",
+                          "name": "div",
+                          "meta": {},
+                          "scope": {},
+                          "properties": {},
+                          "bindings": {
+                            "_text": {
+                              "code": "review.reviewMessage",
+                              "bindingType": "expression",
+                              "type": "single"
+                            }
+                          },
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "SmileReviews",
+  "hooks": {
+    "onMount": [
+      {
+        "code": "fetch(`https://stamped.io/api/widget/reviews?storeUrl=builder-io.myshopify.com&apiKey=${props.apiKey || 'pubkey-8bbDq7W6w4sB3OWeM1HUy2s47702hM'}&productId=${props.productId || '2410511106127'}`).then(res => res.json()).then(data => {\n  state.reviews = data.data;\n})",
+        "onSSR": false
+      }
+    ],
+    "onEvent": []
+  }
+}

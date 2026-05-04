@@ -1,0 +1,141 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "Builder": "Builder"
+      },
+      "path": "@builder.io/sdk",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "select",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "props.attributes": {
+          "code": "props.attributes",
+          "type": "spread",
+          "spreadType": "normal"
+        },
+        "value": {
+          "code": "props.value",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "key": {
+          "code": "Builder.isEditing && props.defaultValue ? props.defaultValue : 'default-key'",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "defaultValue": {
+          "code": "props.defaultValue",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "name": {
+          "code": "props.name",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "For",
+          "meta": {},
+          "scope": {
+            "forName": "option",
+            "indexName": "index"
+          },
+          "properties": {},
+          "bindings": {
+            "each": {
+              "code": "props.options",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "option",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "value": {
+                  "code": "option.value",
+                  "bindingType": "expression",
+                  "type": "single"
+                },
+                "data-index": {
+                  "code": "index",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": [
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "div",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {},
+                  "bindings": {
+                    "_text": {
+                      "code": "option.name || option.value",
+                      "bindingType": "expression",
+                      "type": "single"
+                    }
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "SelectComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "types": [
+    "export interface FormSelectProps {\n  options?: {\n    name?: string;\n    value: string;\n  }[];\n  attributes?: any;\n  name?: string;\n  value?: string;\n  defaultValue?: string;\n}"
+  ],
+  "propsTypeRef": "FormSelectProps",
+  "props": {
+    "options": {
+      "optional": true
+    },
+    "attributes": {
+      "optional": true
+    },
+    "name": {
+      "optional": true
+    },
+    "value": {
+      "optional": true
+    },
+    "defaultValue": {
+      "optional": true
+    }
+  }
+}

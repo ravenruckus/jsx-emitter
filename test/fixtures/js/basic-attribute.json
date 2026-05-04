@@ -1,0 +1,39 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "input",
+      "meta": {},
+      "scope": {},
+      "properties": {
+        "autocapitalize": "on",
+        "autocomplete": "on"
+      },
+      "bindings": {
+        "spellcheck": {
+          "code": "true",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": []
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

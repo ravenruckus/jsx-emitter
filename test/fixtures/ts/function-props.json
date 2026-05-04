@@ -1,0 +1,75 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "p",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "f": {
+          "code": "() => x",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "f1": {
+          "code": "x => x",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "f2": {
+          "code": "x => {}",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "f3": {
+          "code": "function () {\n  return x;\n}",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "f4": {
+          "code": "function (x) {\n  return x;\n}",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "f5": {
+          "code": "function (x) {\n  return;\n}",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "f6": {
+          "code": "function () {\n  return;\n}",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "f7": {
+          "code": "(a, b, c) => a + b + c",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": []
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyBasicComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "types": [
+    "export interface MyBasicComponentProps {\n  id: string;\n}"
+  ],
+  "propsTypeRef": "MyBasicComponentProps"
+}

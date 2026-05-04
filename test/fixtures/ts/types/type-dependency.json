@@ -1,0 +1,65 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "Foo": "Foo"
+      },
+      "path": "./foo-type",
+      "importKind": "type"
+    },
+    {
+      "imports": {
+        "Foo2": "Foo"
+      },
+      "path": "./type-export.lite",
+      "importKind": "type"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "_text": {
+              "code": "props.foo",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "TypeDependency",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "types": [
+    "export type TypeDependencyProps = {\n  foo: Foo;\n  foo2: Foo2;\n}"
+  ],
+  "propsTypeRef": "TypeDependencyProps"
+}

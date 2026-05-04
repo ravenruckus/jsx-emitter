@@ -1,0 +1,49 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "RenderBlock": "default"
+      },
+      "path": "./builder-render-block.raw",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "getRenderContentProps": {
+      "code": "getRenderContentProps(block, index) {\n  return {\n    block: block,\n    index: index\n  };\n}",
+      "type": "method"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "RenderBlock",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "state.getRenderContentProps(props.renderContentProps.block,0)": {
+          "code": "state.getRenderContentProps(props.renderContentProps.block, 0)",
+          "type": "spread",
+          "spreadType": "normal"
+        }
+      },
+      "children": []
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "RenderContent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

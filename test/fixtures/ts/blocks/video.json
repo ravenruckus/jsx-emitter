@@ -1,0 +1,121 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "video",
+      "meta": {},
+      "scope": {},
+      "properties": {
+        "preload": "none"
+      },
+      "bindings": {
+        "props.attributes": {
+          "code": "props.attributes",
+          "type": "spread",
+          "spreadType": "normal"
+        },
+        "style": {
+          "code": "{\n  width: '100%',\n  height: '100%',\n  ...props.attributes?.style,\n  objectFit: props.fit,\n  objectPosition: props.position,\n  // Hack to get object fit to work as expected and\n  // not have the video overflow\n  borderRadius: 1\n}",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "key": {
+          "code": "props.video || 'no-src'",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "poster": {
+          "code": "props.posterImage",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "autoplay": {
+          "code": "props.autoPlay",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "muted": {
+          "code": "props.muted",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "controls": {
+          "code": "props.controls",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "loop": {
+          "code": "props.loop",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": []
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "Video",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "types": [
+    "export interface VideoProps {\n  attributes?: any;\n  video?: string;\n  autoPlay?: boolean;\n  controls?: boolean;\n  muted?: boolean;\n  loop?: boolean;\n  playsInline?: boolean;\n  aspectRatio?: number;\n  width?: number;\n  height?: number;\n  fit?: 'contain' | 'cover' | 'fill';\n  position?: 'center' | 'top' | 'left' | 'right' | 'bottom' | 'top left' | 'top right' | 'bottom left' | 'bottom right';\n  posterImage?: string;\n  lazyLoad?: boolean;\n}"
+  ],
+  "propsTypeRef": "VideoProps",
+  "props": {
+    "attributes": {
+      "optional": true
+    },
+    "video": {
+      "optional": true
+    },
+    "autoPlay": {
+      "optional": true
+    },
+    "controls": {
+      "optional": true
+    },
+    "muted": {
+      "optional": true
+    },
+    "loop": {
+      "optional": true
+    },
+    "playsInline": {
+      "optional": true
+    },
+    "aspectRatio": {
+      "optional": true
+    },
+    "width": {
+      "optional": true
+    },
+    "height": {
+      "optional": true
+    },
+    "fit": {
+      "optional": true
+    },
+    "position": {
+      "optional": true
+    },
+    "posterImage": {
+      "optional": true
+    },
+    "lazyLoad": {
+      "optional": true
+    }
+  }
+}

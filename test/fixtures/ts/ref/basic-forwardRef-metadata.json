@@ -1,0 +1,78 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {
+    "useMetadata": {
+      "forwardRef": "inputRef"
+    }
+  },
+  "refs": {},
+  "state": {
+    "name": {
+      "code": "'PatrickJS'",
+      "type": "property",
+      "propertyType": "normal"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "input",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "ref": {
+              "code": "props.inputRef",
+              "bindingType": "expression",
+              "type": "single"
+            },
+            "css": {
+              "code": "{\n  color: 'red'\n}",
+              "bindingType": "expression",
+              "type": "single"
+            },
+            "value": {
+              "code": "state.name",
+              "bindingType": "expression",
+              "type": "single"
+            },
+            "onChange": {
+              "code": "state.name = event.target.value",
+              "arguments": [
+                "event"
+              ],
+              "bindingType": "function",
+              "type": "single"
+            }
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyBasicForwardRefComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "types": [
+    "export interface Props {\n  showInput: boolean;\n  inputRef: HTMLInputElement;\n}"
+  ],
+  "propsTypeRef": "Props"
+}

@@ -1,0 +1,134 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "MyBooleanAttributeComponent": "default"
+      },
+      "path": "./basic-boolean-attribute-component.raw",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "Show",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "when": {
+              "code": "props.children",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "_text": {
+                  "code": "props.children",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": []
+            },
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "_text": {
+                  "code": "props.type",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "MyBooleanAttributeComponent",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "toggle": {
+              "code": "true",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "MyBooleanAttributeComponent",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "toggle": {
+              "code": "true",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "MyBooleanAttributeComponent",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "list": {
+              "code": "null",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyBooleanAttribute",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "types": [
+    "type Props = {\n  children: any;\n  type: string;\n}"
+  ],
+  "propsTypeRef": "Props"
+}

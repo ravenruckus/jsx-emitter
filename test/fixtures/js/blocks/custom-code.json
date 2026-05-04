@@ -1,0 +1,70 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {
+    "elem": {
+      "argument": "null"
+    }
+  },
+  "state": {
+    "scriptsInserted": {
+      "code": "[]",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "scriptsRun": {
+      "code": "[]",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "findAndRunScripts": {
+      "code": "findAndRunScripts() {\n  // TODO: Move this function to standalone one in '@builder.io/utils'\n  if (elem && typeof window !== 'undefined') {\n    /** @type {HTMLScriptElement[]} */\n    const scripts = elem.getElementsByTagName('script');\n\n    for (let i = 0; i < scripts.length; i++) {\n      const script = scripts[i];\n\n      if (script.src) {\n        if (state.scriptsInserted.includes(script.src)) {\n          continue;\n        }\n\n        state.scriptsInserted.push(script.src);\n        const newScript = document.createElement('script');\n        newScript.async = true;\n        newScript.src = script.src;\n        document.head.appendChild(newScript);\n      } else if (!script.type || ['text/javascript', 'application/javascript', 'application/ecmascript'].includes(script.type)) {\n        if (state.scriptsRun.includes(script.innerText)) {\n          continue;\n        }\n\n        try {\n          state.scriptsRun.push(script.innerText);\n          new Function(script.innerText)();\n        } catch (error) {\n          console.warn('`CustomCode`: Error running script:', error);\n        }\n      }\n    }\n  }\n}",
+      "type": "method"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "ref": {
+          "code": "elem",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "class": {
+          "code": "'builder-custom-code' + (props.replaceNodes ? ' replace-nodes' : '')",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "innerHTML": {
+          "code": "props.code",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": []
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "CustomCode",
+  "hooks": {
+    "onMount": [
+      {
+        "code": "state.findAndRunScripts()",
+        "onSSR": false
+      }
+    ],
+    "onEvent": []
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "Injector": "Injector",
+        "MyService": "MyService",
+        "createInjector": "createInjector"
+      },
+      "path": "@dummy/injection-js",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "name": {
+      "code": "'PatrickJS'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "onChange": {
+      "code": "function onChange() {\n  const change = myService.method('change');\n  console.log(change);\n}",
+      "type": "function"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "_text": {
+              "code": "myService.method('hello') + state.name",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {
+            "_text": "\n      Hello! I can run in React, Vue, Solid, or Liquid!\n      "
+          },
+          "bindings": {},
+          "children": []
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "input",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "onChange": {
+              "code": "state.onChange()",
+              "bindingType": "function",
+              "type": "single"
+            }
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {
+      "myService": {
+        "name": "MyService",
+        "path": "@dummy/injection-js:MyService"
+      }
+    },
+    "set": {
+      "@dummy/injection-js:Injector": {
+        "name": "Injector",
+        "ref": "createInjector()"
+      }
+    }
+  },
+  "subComponents": [],
+  "name": "MyBasicComponent",
+  "hooks": {
+    "onMount": [
+      {
+        "code": "const bye = myService.method('hi');\nconsole.log(bye)",
+        "onSSR": false
+      }
+    ],
+    "onEvent": [],
+    "onInit": {
+      "code": "const hi = myService.method('hi');\nconsole.log(hi)"
+    }
+  }
+}

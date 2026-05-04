@@ -1,0 +1,78 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "Builder": "Builder"
+      },
+      "path": "@builder.io/sdk",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "name": {
+      "code": "'Decadef20'",
+      "type": "property",
+      "propertyType": "normal"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "contentEditable": {
+          "code": "allowEditingText || undefined",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "data-name": {
+          "code": "{\n  test: state.name || 'any name'\n}",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "innerHTML": {
+          "code": "props.text || props.content || state.name || '<p class=\"text-lg\">my name</p>'",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": []
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "Text",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "types": [
+    "export interface TextProps {\n  attributes?: any;\n  rtlMode: boolean;\n  text?: string;\n  content?: string;\n  builderBlock?: any;\n}"
+  ],
+  "propsTypeRef": "TextProps",
+  "props": {
+    "attributes": {
+      "optional": true
+    },
+    "text": {
+      "optional": true
+    },
+    "content": {
+      "optional": true
+    },
+    "builderBlock": {
+      "optional": true
+    }
+  }
+}

@@ -1,0 +1,223 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {
+    "pictureRef": {
+      "argument": "",
+      "typeParameter": "HTMLElement"
+    }
+  },
+  "state": {
+    "scrollListener": {
+      "code": "null",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "imageLoaded": {
+      "code": "false",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "setLoaded": {
+      "code": "setLoaded() {\n  state.imageLoaded = true;\n}",
+      "type": "method"
+    },
+    "useLazyLoading": {
+      "code": "useLazyLoading() {\n  // TODO: Add more checks here, like testing for real web browsers\n  return !!props.lazy && state.isBrowser();\n}",
+      "type": "method"
+    },
+    "isBrowser": {
+      "code": "function isBrowser() {\n  return typeof window !== 'undefined' && window.navigator.product != 'ReactNative';\n}",
+      "type": "function"
+    },
+    "load": {
+      "code": "false",
+      "type": "property",
+      "propertyType": "normal"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "picture",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "ref": {
+              "code": "pictureRef",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "Show",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "when": {
+                  "code": "!state.useLazyLoading() || state.load",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": [
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "img",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {},
+                  "bindings": {
+                    "alt": {
+                      "code": "props.altText",
+                      "bindingType": "expression",
+                      "type": "single"
+                    },
+                    "aria-role": {
+                      "code": "props.altText ? 'presentation' : undefined",
+                      "bindingType": "expression",
+                      "type": "single"
+                    },
+                    "css": {
+                      "code": "{\n  opacity: '1',\n  transition: 'opacity 0.2s ease-in-out',\n  objectFit: 'cover',\n  objectPosition: 'center'\n}",
+                      "bindingType": "expression",
+                      "type": "single"
+                    },
+                    "class": {
+                      "code": "'builder-image' + (props._class ? ' ' + props._class : '')",
+                      "bindingType": "expression",
+                      "type": "single"
+                    },
+                    "src": {
+                      "code": "props.image",
+                      "bindingType": "expression",
+                      "type": "single"
+                    },
+                    "onLoad": {
+                      "code": "state.setLoaded()",
+                      "bindingType": "function",
+                      "type": "single"
+                    },
+                    "srcset": {
+                      "code": "props.srcset",
+                      "bindingType": "expression",
+                      "type": "single"
+                    },
+                    "sizes": {
+                      "code": "props.sizes",
+                      "bindingType": "expression",
+                      "type": "single"
+                    }
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "source",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "srcset": {
+                  "code": "props.srcset",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "_text": {
+              "code": "props.children",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "Image",
+  "hooks": {
+    "onMount": [
+      {
+        "code": "if (state.useLazyLoading()) {\n  // throttled scroll capture listener\n  const listener = () => {\n    if (pictureRef) {\n      const rect = pictureRef.getBoundingClientRect();\n      const buffer = window.innerHeight / 2;\n\n      if (rect.top < window.innerHeight + buffer) {\n        state.load = true;\n        state.scrollListener = null;\n        window.removeEventListener('scroll', listener);\n      }\n    }\n  };\n\n  state.scrollListener = listener;\n  window.addEventListener('scroll', listener, {\n    capture: true,\n    passive: true\n  });\n  listener();\n}",
+        "onSSR": false
+      }
+    ],
+    "onEvent": [],
+    "onUnMount": {
+      "code": "if (state.scrollListener) {\n  window.removeEventListener('scroll', state.scrollListener);\n}"
+    }
+  },
+  "types": [
+    "// TODO: AMP Support?\nexport interface ImageProps {\n  _class?: string;\n  image: string;\n  sizes?: string;\n  lazy?: boolean;\n  height?: number;\n  width?: number;\n  altText?: string;\n  backgroundSize?: string;\n  backgroundPosition?: string; // TODO: Support generating Builder.io and or Shopify `srcset`s when needed\n\n  srcset?: string; // TODO: Implement support for custom aspect ratios\n\n  aspectRatio?: number; // TODO: This might not work as expected in terms of positioning\n\n  children?: any;\n}"
+  ],
+  "propsTypeRef": "ImageProps",
+  "props": {
+    "_class": {
+      "optional": true
+    },
+    "sizes": {
+      "optional": true
+    },
+    "lazy": {
+      "optional": true
+    },
+    "height": {
+      "optional": true
+    },
+    "width": {
+      "optional": true
+    },
+    "altText": {
+      "optional": true
+    },
+    "backgroundSize": {
+      "optional": true
+    },
+    "backgroundPosition": {
+      "optional": true
+    },
+    "srcset": {
+      "optional": true
+    },
+    "aspectRatio": {
+      "optional": true
+    },
+    "children": {
+      "optional": true
+    }
+  }
+}

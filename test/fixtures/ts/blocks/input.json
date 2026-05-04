@@ -1,0 +1,117 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "Builder": "Builder"
+      },
+      "path": "@builder.io/sdk",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "input",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "props.attributes": {
+          "code": "props.attributes",
+          "type": "spread",
+          "spreadType": "normal"
+        },
+        "key": {
+          "code": "Builder.isEditing && props.defaultValue ? props.defaultValue : 'default-key'",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "placeholder": {
+          "code": "props.placeholder",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "type": {
+          "code": "props.type",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "name": {
+          "code": "props.name",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "value": {
+          "code": "props.value",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "defaultValue": {
+          "code": "props.defaultValue",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "required": {
+          "code": "props.required",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "onChange": {
+          "code": "props.onChange?.(event.target.value)",
+          "arguments": [
+            "event"
+          ],
+          "bindingType": "function",
+          "type": "single"
+        }
+      },
+      "children": []
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "FormInputComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "types": [
+    "export interface FormInputProps {\n  type?: string;\n  attributes?: any;\n  name?: string;\n  value?: string;\n  placeholder?: string;\n  defaultValue?: string;\n  required?: boolean;\n  onChange?: (value: string) => void;\n}"
+  ],
+  "propsTypeRef": "FormInputProps",
+  "props": {
+    "type": {
+      "optional": true
+    },
+    "attributes": {
+      "optional": true
+    },
+    "name": {
+      "optional": true
+    },
+    "value": {
+      "optional": true
+    },
+    "placeholder": {
+      "optional": true
+    },
+    "defaultValue": {
+      "optional": true
+    },
+    "required": {
+      "optional": true
+    },
+    "onChange": {
+      "optional": true
+    }
+  }
+}

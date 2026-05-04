@@ -5,16 +5,16 @@
  * package and from upstream `@builder.io/mitosis` against the same JSON input and asserts
  * byte-exact string equality on the emitted React source.
  *
- * Slice 4.1 scope: a single fixture (`basic`) with a single options shape (default + RSC off)
- * to prove the parity infrastructure works end-to-end. Slice 4.3 will sweep the retained
- * Mitosis option matrix across the full corpus.
+ * Slice 4.2 scope: full retained corpus (~136 fixtures × 2 modes = 272 cases) with default
+ * options. Slice 4.3 will sweep the option matrix (stateType=variables, native, style-tag,
+ * twrnc/native-wind, etc.).
  *
  * This file is the ONLY allowed importer of `@builder.io/mitosis` in source/tests; the
  * boundary is enforced by `test/hygiene.test.ts` (Slice 4.4) and the dependency is removed
  * entirely in Phase 7.
  */
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { join, relative, resolve, sep } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { componentToReact as upstreamComponentToReact } from '@builder.io/mitosis';
 import { componentToReact as ourComponentToReact } from '../src';
@@ -22,8 +22,25 @@ import type { JsonComponent, ToReactOptions } from '../src/types';
 
 const FIXTURES_DIR = resolve(__dirname, 'fixtures');
 
-/** Read + parse + clone (each generator may mutate the component). */
-function loadFixture(mode: 'ts' | 'js', name: string): JsonComponent {
+type Mode = 'ts' | 'js';
+
+function listFixtures(mode: Mode): string[] {
+  const root = resolve(FIXTURES_DIR, mode);
+  const out: string[] = [];
+  const walk = (abs: string) => {
+    for (const entry of readdirSync(abs, { withFileTypes: true })) {
+      const path = join(abs, entry.name);
+      if (entry.isDirectory()) walk(path);
+      else if (entry.isFile() && entry.name.endsWith('.json')) {
+        out.push(relative(root, path).split(sep).join('/').replace(/\.json$/, ''));
+      }
+    }
+  };
+  if (statSync(root, { throwIfNoEntry: false })?.isDirectory()) walk(root);
+  return out.sort();
+}
+
+function loadFixture(mode: Mode, name: string): JsonComponent {
   const path = resolve(FIXTURES_DIR, mode, `${name}.json`);
   return JSON.parse(readFileSync(path, 'utf8')) as JsonComponent;
 }
@@ -32,20 +49,52 @@ function freshClone(component: JsonComponent): JsonComponent {
   return JSON.parse(JSON.stringify(component)) as JsonComponent;
 }
 
-function assertParity(name: string, mode: 'ts' | 'js', options: Partial<ToReactOptions>) {
+type Outcome =
+  | { kind: 'value'; value: string }
+  | { kind: 'throw'; message: string };
+
+function runOnce(
+  generator: (component: JsonComponent) => string,
+  component: JsonComponent,
+): Outcome {
+  try {
+    return { kind: 'value', value: generator(freshClone(component)) };
+  } catch (err) {
+    return { kind: 'throw', message: (err as Error).message };
+  }
+}
+
+function runParity(name: string, mode: Mode, options: Partial<ToReactOptions>) {
   const component = loadFixture(mode, name);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const upstream = upstreamComponentToReact(options as any)({ component: freshClone(component) as any });
-  const ours = ourComponentToReact(options)({ component: freshClone(component) });
+  // Some upstream fixtures (e.g., `store/string-literal-store-kebab`) are flagged in
+  // `runTestsForTarget` with `failFor: ['react', ...]` — upstream's runner only
+  // asserts `toThrowError()` for these (test-generator.ts:797), so we treat any
+  // matched-throw pair as parity. A success/throw split between the two is a fail.
+  // (Exact message equality on throws is too strict: pre-prettier whitespace can
+  // drift in ways prettier would normalize on success but exposes when it fails.)
+  const upstream = runOnce(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (c) => upstreamComponentToReact(options as any)({ component: c as any }),
+    component,
+  );
+  const ours = runOnce(
+    (c) => ourComponentToReact(options)({ component: c }),
+    component,
+  );
+  if (upstream.kind === 'throw' && ours.kind === 'throw') return;
   expect(ours).toEqual(upstream);
 }
 
 describe('parity vs @builder.io/mitosis', () => {
-  describe('basic.raw.tsx', () => {
-    for (const mode of ['ts', 'js'] as const) {
-      it(`matches upstream componentToReact (${mode}, default options)`, () => {
-        assertParity('basic', mode, {});
-      });
-    }
-  });
+  for (const mode of ['ts', 'js'] as const) {
+    const fixtures = listFixtures(mode);
+    if (fixtures.length === 0) continue;
+    describe(`mode=${mode} — default options`, () => {
+      for (const name of fixtures) {
+        it(name, () => {
+          runParity(name, mode, {});
+        });
+      }
+    });
+  }
 });

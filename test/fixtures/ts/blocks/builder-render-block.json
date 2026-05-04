@@ -1,0 +1,275 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "BuilderContext": "default"
+      },
+      "path": "../context/builder.context.lite",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "getBlockActions": "getBlockActions"
+      },
+      "path": "../functions/get-block-actions",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "getBlockComponentOptions": "getBlockComponentOptions"
+      },
+      "path": "../functions/get-block-component-options",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "getBlockProperties": "getBlockProperties"
+      },
+      "path": "../functions/get-block-properties",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "getBlockStyles": "getBlockStyles"
+      },
+      "path": "../functions/get-block-styles",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "getBlockTag": "getBlockTag"
+      },
+      "path": "../functions/get-block-tag",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "getProcessedBlock": "getProcessedBlock"
+      },
+      "path": "../functions/get-processed-block",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "components": "components"
+      },
+      "path": "../functions/register-component",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "BuilderBlock": "BuilderBlock"
+      },
+      "path": "../types/builder-block",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "BlockStyles": "default"
+      },
+      "path": "./block-styles.lite",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "component": {
+      "code": "get component() {\n  const componentName = state.useBlock.component?.name;\n\n  if (!componentName) {\n    return null;\n  }\n\n  const ref = components[state.useBlock.component?.name!];\n\n  if (componentName && !ref) {\n    // TODO: Public doc page with more info about this message\n    console.warn(`\n          Could not find a registered component named \"${componentName}\".\n          If you registered it, is the file that registered it imported by the file that needs to render it?`);\n  }\n\n  return ref;\n}",
+      "type": "getter"
+    },
+    "componentInfo": {
+      "code": "get componentInfo() {\n  return state.component?.info;\n}",
+      "type": "getter"
+    },
+    "componentRef": {
+      "code": "get componentRef() {\n  return state.component?.component;\n}",
+      "type": "getter"
+    },
+    "tagName": {
+      "code": "get tagName() {\n  return (getBlockTag(state.useBlock) as any);\n}",
+      "type": "getter"
+    },
+    "properties": {
+      "code": "get properties() {\n  return getBlockProperties(state.useBlock);\n}",
+      "type": "getter"
+    },
+    "useBlock": {
+      "code": "get useBlock() {\n  return getProcessedBlock({\n    block: props.block,\n    state: builderContext.state,\n    context: builderContext.context\n  });\n}",
+      "type": "getter"
+    },
+    "actions": {
+      "code": "get actions() {\n  return getBlockActions({\n    block: state.useBlock,\n    state: builderContext.state,\n    context: builderContext.context\n  });\n}",
+      "type": "getter"
+    },
+    "css": {
+      "code": "get css() {\n  return getBlockStyles(state.useBlock);\n}",
+      "type": "getter"
+    },
+    "componentOptions": {
+      "code": "get componentOptions() {\n  return getBlockComponentOptions(state.useBlock);\n}",
+      "type": "getter"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "Fragment",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "state.tagName",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "state.properties": {
+              "code": "state.properties",
+              "type": "spread",
+              "spreadType": "normal"
+            },
+            "style": {
+              "code": "state.css",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "BlockStyles",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "block": {
+                  "code": "state.useBlock",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": []
+            },
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "Show",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "when": {
+                  "code": "state.componentRef",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": [
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "state.componentRef",
+                  "meta": {},
+                  "scope": {},
+                  "properties": {},
+                  "bindings": {
+                    "state.componentOptions": {
+                      "code": "state.componentOptions",
+                      "type": "spread",
+                      "spreadType": "normal"
+                    },
+                    "children": {
+                      "code": "state.useBlock.children",
+                      "bindingType": "expression",
+                      "type": "single"
+                    }
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "Show",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "when": {
+                  "code": "!state.componentRef && state.useBlock.children && state.useBlock.children.length",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": [
+                {
+                  "@type": "@builder.io/mitosis/node",
+                  "name": "For",
+                  "meta": {},
+                  "scope": {
+                    "forName": "child",
+                    "indexName": "index"
+                  },
+                  "properties": {},
+                  "bindings": {
+                    "each": {
+                      "code": "state.useBlock.children",
+                      "bindingType": "expression",
+                      "type": "single"
+                    }
+                  },
+                  "children": [
+                    {
+                      "@type": "@builder.io/mitosis/node",
+                      "name": "RenderBlock",
+                      "meta": {},
+                      "scope": {},
+                      "properties": {},
+                      "bindings": {
+                        "index": {
+                          "code": "index",
+                          "bindingType": "expression",
+                          "type": "single"
+                        },
+                        "block": {
+                          "code": "child",
+                          "bindingType": "expression",
+                          "type": "single"
+                        }
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {
+      "builderContext": {
+        "name": "BuilderContext",
+        "path": "../context/builder.context.lite:default"
+      }
+    },
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "RenderBlock",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "types": [
+    "export type RenderBlockProps = {\n  block: BuilderBlock;\n  index: number;\n}"
+  ],
+  "propsTypeRef": "RenderBlockProps"
+}

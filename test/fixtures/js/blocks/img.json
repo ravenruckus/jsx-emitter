@@ -1,0 +1,64 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "Builder": "Builder"
+      },
+      "path": "@builder.io/sdk",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "img",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "style": {
+          "code": "{\n  objectFit: props.backgroundSize || 'cover',\n  objectPosition: props.backgroundPosition || 'center'\n}",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "props.attributes": {
+          "code": "props.attributes",
+          "type": "spread",
+          "spreadType": "normal"
+        },
+        "key": {
+          "code": "Builder.isEditing && props.imgSrc || 'default-key'",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "alt": {
+          "code": "props.altText",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "src": {
+          "code": "props.imgSrc",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": []
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "ImgComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  }
+}

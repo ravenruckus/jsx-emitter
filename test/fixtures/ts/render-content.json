@@ -1,0 +1,113 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [
+    {
+      "imports": {
+        "BuilderContext": "default"
+      },
+      "path": "@dummy/context.lite",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "dispatchNewContentToVisualEditor": "dispatchNewContentToVisualEditor",
+        "sendComponentsToVisualEditor": "sendComponentsToVisualEditor",
+        "trackClick": "trackClick"
+      },
+      "path": "@dummy/injection-js",
+      "importKind": "value"
+    },
+    {
+      "imports": {
+        "RenderBlocks": "default"
+      },
+      "path": "@dummy/RenderBlocks.lite.tsx",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "css": {
+          "code": "{\n  display: 'flex',\n  flexDirection: 'columns'\n}",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "onClick": {
+          "code": "trackClick(props.content.id)",
+          "bindingType": "function",
+          "type": "single"
+        }
+      },
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "RenderBlocks",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "blocks": {
+              "code": "props.content.blocks",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {
+      "@dummy/context.lite:default": {
+        "name": "BuilderContext",
+        "value": {
+          "content": {
+            "code": "get content() {\n  return 3;\n}",
+            "type": "getter"
+          },
+          "registeredComponents": {
+            "code": "get registeredComponents() {\n  return 4;\n}",
+            "type": "getter"
+          }
+        }
+      }
+    }
+  },
+  "subComponents": [],
+  "name": "RenderContent",
+  "hooks": {
+    "onMount": [
+      {
+        "code": "sendComponentsToVisualEditor(props.customComponents)",
+        "onSSR": false
+      }
+    ],
+    "onEvent": [],
+    "onUpdate": [
+      {
+        "code": "dispatchNewContentToVisualEditor(props.content)",
+        "deps": "[props.content]",
+        "depsArray": [
+          "props.content"
+        ]
+      }
+    ]
+  },
+  "types": [
+    "type Props = {\n  customComponents: string[];\n  content: {\n    blocks: any[];\n    id: string;\n  };\n}"
+  ],
+  "propsTypeRef": "Props"
+}

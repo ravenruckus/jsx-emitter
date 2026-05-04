@@ -1,0 +1,53 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "span",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "class": {
+          "code": "props.attributes?.class || props.attributes?.className",
+          "bindingType": "expression",
+          "type": "single"
+        },
+        "innerHTML": {
+          "code": "props.text || ''",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": []
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "RawText",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "types": [
+    "export interface RawTextProps {\n  attributes?: any;\n  text?: string; // builderBlock?: any;\n\n}"
+  ],
+  "propsTypeRef": "RawTextProps",
+  "props": {
+    "attributes": {
+      "optional": true
+    },
+    "text": {
+      "optional": true
+    }
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {
+    "usePrevious": {
+      "code": "export function usePrevious(value) {\n  // The ref object is a generic container whose current property is mutable ...\n  // ... and can hold any value, similar to an instance property on a class\n  let ref = useRef(null); // Store current value in ref\n\n  onUpdate(() => {\n    ref = value;\n  }, [value]); // Only re-run if value changes\n  // Return previous value (happens before update in useEffect above)\n\n  return ref;\n}",
+      "isFunction": true,
+      "usedInLocal": false
+    }
+  },
+  "inputs": [],
+  "meta": {},
+  "refs": {
+    "prevCount": {
+      "argument": "state.count"
+    }
+  },
+  "state": {
+    "count": {
+      "code": "0",
+      "type": "property",
+      "propertyType": "normal"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {},
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "h1",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {},
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "_text": "\n        Now: "
+              },
+              "bindings": {},
+              "children": []
+            },
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "_text": {
+                  "code": "state.count",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": []
+            },
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "_text": ", before: "
+              },
+              "bindings": {},
+              "children": []
+            },
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "_text": {
+                  "code": "prevCount",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "button",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "onClick": {
+              "code": "state.count += 1",
+              "bindingType": "function",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "@builder.io/mitosis/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {
+                "_text": "Increment"
+              },
+              "bindings": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyPreviousComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": [],
+    "onUpdate": [
+      {
+        "code": "prevCount = state.count",
+        "deps": "[state.count]",
+        "depsArray": [
+          "state.count"
+        ]
+      }
+    ]
+  }
+}
