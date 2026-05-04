@@ -28,6 +28,7 @@
     "@types/babel__generator": "^7.27.0",
     "@types/lodash": "^4.17.24",
     "@types/node": "^25.6.0",
+    "@types/object-hash": "^3.0.6",
     "csstype": "^3.2.3",
     "rimraf": "^5.0.5",
     "typescript": "^5.3.2",
@@ -42,6 +43,7 @@
     "fp-ts": "^2.16.11",
     "json5": "^2.2.3",
     "lodash": "^4.18.1",
-    "neotraverse": "^0.6.18"
+    "neotraverse": "^0.6.18",
+    "object-hash": "^3.0.0"
   }
 }

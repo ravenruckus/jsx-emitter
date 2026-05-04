@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { collectCss, normalizeName } from '../src/internal/styles/collect-css';
 import {
   getNestedSelectors,
   getStylesOnly,
@@ -145,5 +146,202 @@ describe('styleMapToCss', () => {
   });
   it('preserves CSS custom properties (--var) verbatim', () => {
     expect(styleMapToCss({ '--my-var': 'red' } as any)).toBe('  --my-var: red;');
+  });
+});
+
+describe('normalizeName', () => {
+  it('returns empty string for undefined', () => {
+    expect(normalizeName(undefined)).toBe('');
+  });
+  it('returns empty string for whitespace-only input', () => {
+    expect(normalizeName('   ')).toBe('');
+  });
+  it('returns empty string for input containing no alphanumerics', () => {
+    expect(normalizeName('!@#$%')).toBe('');
+  });
+  it('emits css{numbers} for pure-numeric input', () => {
+    expect(normalizeName('123')).toBe('css123');
+  });
+  it('emits css{numbers} for numeric-with-dashes input', () => {
+    expect(normalizeName('1-2-3')).toBe('css123');
+  });
+  it('strips leading numbers and dashes when followed by alpha', () => {
+    expect(normalizeName('123-abc')).toBe('abc');
+  });
+  it('strips non-alphanumeric characters except dash and underscore', () => {
+    expect(normalizeName('hello!@world')).toBe('helloworld');
+  });
+  it('preserves alphanumerics, dashes and underscores', () => {
+    expect(normalizeName('foo-bar_baz1')).toBe('foo-bar_baz1');
+  });
+});
+
+describe('collectCss', () => {
+  it('returns empty string when component has no styles or css bindings', () => {
+    expect(collectCss(component())).toBe('');
+  });
+
+  it('appends component.style verbatim with a trailing newline', () => {
+    const c = component({ style: '.preset { color: red; }' });
+    expect(collectCss(c)).toBe('.preset { color: red; }\n');
+  });
+
+  it('extracts a class for a single node and appends rules', () => {
+    const child = node({
+      name: 'span',
+      bindings: { css: { code: "{ color: 'red' }", type: 'single', bindingType: 'expression' } },
+    });
+    const c = component({ children: [child] });
+    const out = collectCss(c);
+    expect(out).toContain('.span {');
+    expect(out).toContain('color: red');
+  });
+
+  it('attaches the generated class name to properties.class', () => {
+    const child = node({
+      name: 'span',
+      bindings: { css: { code: "{ color: 'red' }", type: 'single', bindingType: 'expression' } },
+    });
+    collectCss(component({ children: [child] }));
+    expect(child.properties.class).toBe('span');
+  });
+
+  it('combines with an existing class binding using string concatenation', () => {
+    const child = node({
+      name: 'span',
+      bindings: {
+        class: { code: 'props.cls', type: 'single', bindingType: 'expression' },
+        css: { code: "{ color: 'red' }", type: 'single', bindingType: 'expression' },
+      },
+    });
+    collectCss(component({ children: [child] }));
+    expect(child.bindings.class!.code).toBe("props.cls + ' span'");
+  });
+
+  it('removes bindings.css after collection', () => {
+    const child = node({
+      name: 'span',
+      bindings: { css: { code: "{ color: 'red' }", type: 'single', bindingType: 'expression' } },
+    });
+    collectCss(component({ children: [child] }));
+    expect(child.bindings.css).toBeUndefined();
+  });
+
+  it('reuses class name when two nodes have identical CSS (hash dedupe)', () => {
+    const a = node({
+      name: 'span',
+      bindings: { css: { code: "{ color: 'red' }", type: 'single', bindingType: 'expression' } },
+    });
+    const b = node({
+      name: 'span',
+      bindings: { css: { code: "{ color: 'red' }", type: 'single', bindingType: 'expression' } },
+    });
+    collectCss(component({ children: [a, b] }));
+    expect(a.properties.class).toBe('span');
+    expect(b.properties.class).toBe('span');
+  });
+
+  it('appends -2 to second class when two nodes have different CSS but same component name', () => {
+    const a = node({
+      name: 'span',
+      bindings: { css: { code: "{ color: 'red' }", type: 'single', bindingType: 'expression' } },
+    });
+    const b = node({
+      name: 'span',
+      bindings: { css: { code: "{ color: 'blue' }", type: 'single', bindingType: 'expression' } },
+    });
+    collectCss(component({ children: [a, b] }));
+    expect(a.properties.class).toBe('span');
+    expect(b.properties.class).toBe('span-2');
+  });
+
+  it('appends an option-supplied prefix after the class base name', () => {
+    const child = node({
+      name: 'span',
+      bindings: { css: { code: "{ color: 'red' }", type: 'single', bindingType: 'expression' } },
+    });
+    const out = collectCss(component({ children: [child] }), { prefix: 'abc' });
+    expect(child.properties.class).toBe('span-abc');
+    expect(out).toContain('.span-abc {');
+  });
+
+  it('uses properties.$name when present (dash-cased)', () => {
+    const child = node({
+      name: 'span',
+      properties: { $name: 'MyButton' },
+      bindings: { css: { code: "{ color: 'red' }", type: 'single', bindingType: 'expression' } },
+    });
+    collectCss(component({ children: [child] }));
+    expect(child.properties.class).toBe('my-button');
+  });
+
+  it('preserves h1-h6 element names without dash-casing', () => {
+    const child = node({
+      name: 'h1',
+      bindings: { css: { code: "{ color: 'red' }", type: 'single', bindingType: 'expression' } },
+    });
+    collectCss(component({ children: [child] }));
+    expect(child.properties.class).toBe('h1');
+  });
+
+  it('expands &-references in nested selectors to the parent class', () => {
+    const child = node({
+      name: 'span',
+      bindings: {
+        css: {
+          code: "{ color: 'red', '&.active': { color: 'blue' } }",
+          type: 'single',
+          bindingType: 'expression',
+        },
+      },
+    });
+    const out = collectCss(component({ children: [child] }));
+    expect(out).toContain('.span.active {');
+    expect(out).toContain('color: blue');
+  });
+
+  it('renders pseudo-class nested selectors as .class:state', () => {
+    const child = node({
+      name: 'span',
+      bindings: {
+        css: {
+          code: "{ color: 'red', ':hover': { color: 'blue' } }",
+          type: 'single',
+          bindingType: 'expression',
+        },
+      },
+    });
+    const out = collectCss(component({ children: [child] }));
+    expect(out).toContain('.span:hover {');
+  });
+
+  it('wraps @-rules so the parent class lives inside the at-rule', () => {
+    const child = node({
+      name: 'span',
+      bindings: {
+        css: {
+          code: "{ color: 'red', '@media (max-width: 500px)': { color: 'blue' } }",
+          type: 'single',
+          bindingType: 'expression',
+        },
+      },
+    });
+    const out = collectCss(component({ children: [child] }));
+    expect(out).toContain('@media (max-width: 500px) { .span {');
+  });
+
+  it('renders descendant selectors with a space when nested key has no & or :', () => {
+    const child = node({
+      name: 'span',
+      bindings: {
+        css: {
+          code: "{ color: 'red', 'span a': { color: 'blue' } }",
+          type: 'single',
+          bindingType: 'expression',
+        },
+      },
+    });
+    const out = collectCss(component({ children: [child] }));
+    expect(out).toContain('.span span a {');
   });
 });
