@@ -411,3 +411,9 @@ export interface ToReactOptions extends BaseTranspilerOptions {
   contextType?: 'context' | 'prop-drill';
   addUseClientDirectiveIfNeeded?: boolean;
 }
+
+export interface ToReactNativeOptions extends BaseTranspilerOptions {
+  sanitizeReactNative?: boolean;
+  stylesType: 'react-native' | 'twrnc' | 'native-wind';
+  stateType: 'useState' | 'variables';
+}

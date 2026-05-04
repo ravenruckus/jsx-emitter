@@ -1,6 +1,7 @@
 import { types } from '@babel/core';
 import hash from 'hash-sum';
 import json5 from 'json5';
+import traverse from 'neotraverse/legacy';
 import { format } from 'prettier/standalone';
 import { blockToReact } from './blocks';
 import { createSingleBinding } from './internal/bindings';
@@ -11,6 +12,9 @@ import { createNode } from './internal/create-node';
 import { dedent } from './internal/dedent';
 import { getDefaultProps } from './internal/default-props';
 import { fastClone } from './internal/fast-clone';
+import { VALID_HTML_TAGS } from './internal/html-tags';
+import isChildren from './internal/is-children';
+import { isNode } from './internal/is-node';
 import { getPropsRef } from './internal/get-props-ref';
 import { getRefs } from './internal/get-refs';
 import { stringifyContextValue } from './internal/get-state-object-string';
@@ -58,7 +62,14 @@ import {
 import { stripMetaProperties } from './internal/strip-meta-properties';
 import { collectCss } from './internal/styles/collect-css';
 import { hasCss } from './internal/styles/helpers';
-import type { JsonComponent, ToReactOptions, TranspilerGenerator } from './types';
+import { mergeOptions } from './internal/merge-options';
+import type {
+  JsonComponent,
+  Plugin,
+  ToReactNativeOptions,
+  ToReactOptions,
+  TranspilerGenerator,
+} from './types';
 
 export const contextPropDrillingKey = '_context';
 
@@ -441,3 +452,190 @@ const _componentToReact = (
 
   return stripNewlinesInStrings(str);
 };
+
+// ---------------------------------------------------------------------------
+// React Native wrapper
+// ---------------------------------------------------------------------------
+
+/**
+ * Pre-pass plugin: rewrites lowercase HTML element names to React Native
+ * primitives (`<View />`, `<Text />`, `<TouchableOpacity />`, etc.). Children
+ * nodes (named via `isChildren`) get their name cleared so the React generator
+ * renders them as a bare slot.
+ */
+const PROCESS_REACT_NATIVE_PLUGIN: Plugin = () => ({
+  json: {
+    pre: (json: JsonComponent) => {
+      traverse(json).forEach((node) => {
+        if (isNode(node)) {
+          if (isChildren({ node })) {
+            node.name = '';
+          } else if (node.name.toLowerCase() === node.name && VALID_HTML_TAGS.includes(node.name)) {
+            if (node.name === 'input') {
+              node.name = 'TextInput';
+            } else if (node.name === 'img') {
+              node.name = 'Image';
+            } else if (node.name === 'a') {
+              node.name = 'TouchableOpacity';
+            } else if (node.name === 'button') {
+              node.name = 'Button';
+            } else if (node.bindings.onClick) {
+              node.name = 'Pressable';
+            } else {
+              node.name = 'View';
+            }
+          } else if (
+            node.properties._text?.trim().length ||
+            node.bindings._text?.code?.trim()?.length
+          ) {
+            node.name = 'Text';
+          }
+        }
+      });
+    },
+  },
+});
+
+/** Pre-pass plugin: drops `class` / `className` from the JSON entirely. */
+const REMOVE_REACT_NATIVE_CLASSES_PLUGIN: Plugin = () => ({
+  json: {
+    pre: (json: JsonComponent) => {
+      traverse(json).forEach(function (node) {
+        if (isNode(node)) {
+          if (node.properties.class) {
+            delete node.properties.class;
+          }
+          if (node.properties.className) {
+            delete node.properties.className;
+          }
+          if (node.bindings.class) {
+            delete node.bindings.class;
+          }
+          if (node.bindings.className) {
+            delete node.bindings.className;
+          }
+        }
+      });
+    },
+  },
+});
+
+/** Post-pass plugin: rewrites `class`/`className` into a `tw\`…\`` style binding. */
+const TWRNC_STYLES_PLUGIN: Plugin = () => ({
+  json: {
+    post: (json: JsonComponent) => {
+      traverse(json).forEach(function (node) {
+        if (isNode(node)) {
+          const staticClasses = [node.properties.class, node.properties.className]
+            .filter(Boolean)
+            .join(' ');
+
+          const dynamicClasses = [node.bindings.class, node.bindings.className].filter(Boolean);
+
+          if (staticClasses || dynamicClasses.length) {
+            let styleCode = '';
+
+            if (staticClasses) {
+              styleCode = `tw\`${staticClasses}\``;
+            }
+
+            if (dynamicClasses.length) {
+              const dynamicCode = dynamicClasses
+                .map((dc) => (dc && dc.code ? dc.code : null))
+                .filter(Boolean)
+                .join(', ');
+
+              if (dynamicCode) {
+                if (styleCode) {
+                  styleCode = `tw.style(${styleCode}, ${dynamicCode})`;
+                } else if (dynamicClasses.length > 1) {
+                  styleCode = `tw.style([${dynamicCode}])`;
+                } else {
+                  styleCode = `tw.style(${dynamicCode})`;
+                }
+              }
+            }
+
+            if (styleCode) {
+              node.bindings.style = createSingleBinding({ code: styleCode });
+            }
+          }
+
+          delete node.properties.class;
+          delete node.properties.className;
+          delete node.bindings.class;
+          delete node.bindings.className;
+        }
+      });
+    },
+  },
+});
+
+/**
+ * Post-pass plugin: collapses `class` + `className` into a single `className`
+ * property. The "with babel" setup is the only one supported:
+ *   https://www.nativewind.dev/guides/babel
+ */
+const NATIVE_WIND_STYLES_PLUGIN: Plugin = () => ({
+  json: {
+    post: (json: JsonComponent) => {
+      traverse(json).forEach(function (node) {
+        if (isNode(node)) {
+          const combinedClasses = [
+            node.properties.class,
+            node.properties.className,
+            node.bindings.class,
+            node.bindings.className,
+          ]
+            .filter(Boolean)
+            .join(' ');
+
+          if (node.properties.class) {
+            delete node.properties.class;
+          }
+          if (node.properties.className) {
+            delete node.properties.className;
+          }
+          if (node.bindings.class) {
+            delete node.bindings.class;
+          }
+          if (node.bindings.className) {
+            delete node.bindings.className;
+          }
+
+          if (combinedClasses) {
+            node.properties.className = combinedClasses;
+          }
+        }
+      });
+    },
+  },
+});
+
+const NATIVE_DEFAULT_OPTIONS: ToReactNativeOptions = {
+  stateType: 'useState',
+  stylesType: 'react-native',
+  plugins: [PROCESS_REACT_NATIVE_PLUGIN],
+};
+
+/**
+ * React Native wrapper. Layers the React Native–specific JSON plugins on top
+ * of `componentToReact` and forces `type: 'native'`.
+ */
+export const componentToReactNative: TranspilerGenerator<Partial<ToReactNativeOptions>> =
+  (_options = {}) =>
+  ({ component, path }) => {
+    const json = fastClone(component);
+
+    const options = mergeOptions(NATIVE_DEFAULT_OPTIONS, _options);
+
+    if (options.stylesType === 'twrnc') {
+      options.plugins.push(TWRNC_STYLES_PLUGIN);
+    } else if (options.stylesType === 'native-wind') {
+      options.plugins.push(NATIVE_WIND_STYLES_PLUGIN);
+    } else {
+      options.plugins.push(REMOVE_REACT_NATIVE_CLASSES_PLUGIN);
+    }
+
+    return componentToReact({ ...options, type: 'native' })({ component: json, path });
+  };
