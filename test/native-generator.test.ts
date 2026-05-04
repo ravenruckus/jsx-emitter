@@ -157,3 +157,18 @@ describe('componentToReactNative — native-wind', () => {
     expect(out).toMatch(/className\s*=\s*"p-4 bg-red-500"/);
   });
 });
+
+describe('componentToReactNative — stateType=variables', () => {
+  it('emits no useState import and renders state as plain const declarations', () => {
+    const out = compile(
+      component({
+        name: 'C',
+        state: { x: { code: '1', type: 'property' } },
+        children: [createNode({ name: 'div' })],
+      }),
+      { stateType: 'variables' },
+    );
+    expect(out).not.toContain('useState');
+    expect(out).toMatch(/const\s+x\s*=\s*1/);
+  });
+});

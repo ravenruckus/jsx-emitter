@@ -12,11 +12,11 @@ import { createNode } from './internal/create-node';
 import { dedent } from './internal/dedent';
 import { getDefaultProps } from './internal/default-props';
 import { fastClone } from './internal/fast-clone';
+import { getPropsRef } from './internal/get-props-ref';
+import { getRefs } from './internal/get-refs';
 import { VALID_HTML_TAGS } from './internal/html-tags';
 import isChildren from './internal/is-children';
 import { isNode } from './internal/is-node';
-import { getPropsRef } from './internal/get-props-ref';
-import { getRefs } from './internal/get-refs';
 import { stringifyContextValue } from './internal/get-state-object-string';
 import { gettersToFunctions } from './internal/getters-to-functions';
 import { handleMissingState } from './internal/handle-missing-state';
@@ -29,7 +29,7 @@ import {
   wrapInFragment,
 } from './internal/jsx-helpers';
 import { mapRefs } from './internal/map-refs';
-import { initializeOptions } from './internal/merge-options';
+import { initializeOptions, mergeOptions } from './internal/merge-options';
 import { checkIsDefined } from './internal/nullable';
 import {
   getOnEventHookComponentBody,
@@ -62,7 +62,6 @@ import {
 import { stripMetaProperties } from './internal/strip-meta-properties';
 import { collectCss } from './internal/styles/collect-css';
 import { hasCss } from './internal/styles/helpers';
-import { mergeOptions } from './internal/merge-options';
 import type {
   JsonComponent,
   Plugin,

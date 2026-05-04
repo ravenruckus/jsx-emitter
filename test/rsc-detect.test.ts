@@ -81,7 +81,7 @@ describe('checkIfIsClientComponent', () => {
   });
 
   it('is false when only a child component name (Capitalized) has an event binding', () => {
-    // Capitalized names are user components — handlers there don\'t count as DOM listeners.
+    // Capitalized names are user components — handlers there don't count as DOM listeners.
     const tree = createNode({
       name: 'MyButton',
       bindings: { onClick: createSingleBinding({ code: 'go()' }) },
