@@ -170,11 +170,11 @@ export interface ContextSetInfo extends ContextOptions {
 // Target blocks (target-specific code overrides embedded in JSON)
 // ---------------------------------------------------------------------------
 
+type TargetBlockKey = 'react' | 'reactNative' | 'default';
+
 export type TargetBlock<Return> = Partial<{
-  [target: string]: Return;
-}> & {
-  default?: Return;
-};
+  [T in TargetBlockKey]?: Return;
+}>;
 
 export type TargetBlockCode = TargetBlock<{
   code: string;
