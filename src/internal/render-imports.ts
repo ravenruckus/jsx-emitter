@@ -111,7 +111,6 @@ const getImportValue = ({ defaultImport, namedImports, starImport }: ImportValue
 type ImportArgs = {
   target: Target;
   preserveFileExtensions?: boolean;
-  component?: JsonComponent | null | undefined;
   explicitImportFileExtension?: boolean;
 };
 
@@ -175,19 +174,16 @@ export const renderPreComponent = ({
   preserveFileExtensions = false,
   explicitImportFileExtension = false,
   excludeExportAndLocal = false,
-}: Omit<ImportArgs, 'explicitImportFileExtension'> &
-  Partial<Pick<ImportArgs, 'explicitImportFileExtension'>> & {
-    component: JsonComponent;
-    target: Target;
-    excludeLiteComponents?: boolean;
-    excludeExportAndLocal?: boolean;
-  }): string => `
+}: ImportArgs & {
+  component: JsonComponent;
+  excludeLiteComponents?: boolean;
+  excludeExportAndLocal?: boolean;
+}): string => `
     ${renderImports({
       imports: component.imports,
       target,
       excludeLiteComponents,
       preserveFileExtensions,
-      component,
       explicitImportFileExtension,
     })}
     ${excludeExportAndLocal ? '' : renderExportAndLocal(component)}

@@ -127,6 +127,23 @@ describe('transformImportPath', () => {
       }),
     ).toBe('react');
   });
+
+  it.each(['react', 'reactNative'] as const)(
+    'rewrites .lite.tsx component path to .js for target %s when explicitImportFileExtension is true',
+    (target) => {
+      // Locks in current 'react' / 'reactNative' equivalence in
+      // getComponentFileExtensionForTarget — a future divergence in
+      // component-file-extensions.ts surfaces here as a failure.
+      expect(
+        transformImportPath({
+          theImport: importOf({ path: '../foo.lite.tsx' }),
+          target,
+          preserveFileExtensions: false,
+          explicitImportFileExtension: true,
+        }),
+      ).toBe('../foo.js');
+    },
+  );
 });
 
 describe('renderImport', () => {
@@ -226,6 +243,24 @@ describe('renderPreComponent', () => {
       excludeLiteComponents: true,
     });
     expect(out).not.toContain('foo');
+    expect(out).toContain("from 'react'");
+  });
+
+  it('also drops non-component paths that contain ".lite" when excludeLiteComponents is true', () => {
+    // Locks in upstream's `includes('.lite')` substring match (not a suffix check) so a
+    // future tightening surfaces here as a failure rather than a silent behavior change.
+    const c = component({
+      imports: [
+        importOf({ path: './foo.lite-helper', imports: { Helper: 'default' } }),
+        importOf({ path: 'react', imports: { useState: 'useState' } }),
+      ],
+    });
+    const out = renderPreComponent({
+      component: c,
+      target: 'react',
+      excludeLiteComponents: true,
+    });
+    expect(out).not.toContain('foo.lite-helper');
     expect(out).toContain("from 'react'");
   });
 
