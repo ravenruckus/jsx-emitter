@@ -310,6 +310,8 @@ export type ComponentMetadata = {
   forwardRef?: string;
   /** Enables/disables attribute passing for frameworks with custom elements. */
   attributePassing?: AttributePassingType;
+  /** Per-context-name reactivity overrides for `getContextType`. */
+  contextTypes?: Dictionary<ReactivityType>;
 
   react?: ReactMetadata;
   reactNative?: ReactNativeMetadata;
