@@ -46,4 +46,9 @@ describe('getDefaultProps', () => {
     expect(out.startsWith('props = {')).toBe(true);
     expect(out.endsWith(', ...props}')).toBe(true);
   });
+
+  it('emits literal "prop: undefined" when an entry exists but has no code field', () => {
+    const c = component({ defaultProps: { x: { type: 'property' } as any } });
+    expect(getDefaultProps(c)).toBe('props = {x: undefined, ...props}');
+  });
 });

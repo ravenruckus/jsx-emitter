@@ -90,6 +90,11 @@ describe('cleanReactNativeBlockStyles', () => {
     expect(out.display).toBe('flex');
   });
 
+  it('keeps a valid `display: none`', () => {
+    const out = cleanReactNativeBlockStyles({ display: 'none' });
+    expect(out.display).toBe('none');
+  });
+
   it('extracts var() default values before validation', () => {
     const out = cleanReactNativeBlockStyles({ color: 'var(--my-color, red)' });
     expect(out.color).toBe('red');
@@ -129,6 +134,11 @@ describe('sanitizeReactNativeBlockStyles', () => {
   it('keeps display: flex unchanged (default path)', () => {
     const out = sanitizeReactNativeBlockStyles({ display: 'flex' }, opts());
     expect(out.display).toBe('flex');
+  });
+
+  it('keeps display: none unchanged (default path)', () => {
+    const out = sanitizeReactNativeBlockStyles({ display: 'none' }, opts());
+    expect(out.display).toBe('none');
   });
 
   it('drops lineHeight when its value is not a number (default path)', () => {

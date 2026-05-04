@@ -182,7 +182,7 @@ describe('processTagReferences', () => {
     expect(c.state.Foo).toBeDefined();
   });
 
-  it('runs processBinding (strips state.) on non-state-prefixed names', () => {
+  it('leaves non-state-prefixed names unchanged (props./bare paths) via the else branch', () => {
     const c = component({
       children: [node({ name: 'props.SomeTag' })],
     });

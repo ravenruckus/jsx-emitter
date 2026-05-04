@@ -112,6 +112,7 @@ export function cleanReactNativeBlockStyles(styles: Styles): Styles {
 
     // Convert 'background' to 'backgroundColor'
     if (key === 'background' && typeof value === 'string') {
+      // Upstream parity: line below is dead — the spread return value wins.
       acc.backgroundColor = value;
       return { ...acc, backgroundColor: value };
     }
