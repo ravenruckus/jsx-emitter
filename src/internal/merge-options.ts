@@ -55,7 +55,14 @@ export const initializeOptions = <T extends BaseTranspilerOptions>({
 
   // Default plugins run first so they can rewrite magic strings and signal
   // access into ordinary code before any user plugin sees the component.
-  options.plugins.unshift(processTargetBlocks(), getSignalTypePlugin(), getSignalAccessPlugin());
+  // `target` is forwarded so `useTarget({ react: ..., reactNative: ... })` blocks
+  // resolve to the active flow's key. Signal mappers are React-only so they don't
+  // take the parameter.
+  options.plugins.unshift(
+    processTargetBlocks(target),
+    getSignalTypePlugin(),
+    getSignalAccessPlugin(),
+  );
 
   return options;
 };

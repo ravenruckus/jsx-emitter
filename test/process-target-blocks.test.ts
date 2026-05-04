@@ -191,4 +191,75 @@ describe('processTargetBlocks', () => {
     processTargetBlocks()().json!.pre!(json);
     expect(json.children[0].bindings.keep?.code).toBe('untouched');
   });
+
+  describe('target=reactNative', () => {
+    it('reads the reactNative key when the block has both react and reactNative', () => {
+      const node = createNode({
+        bindings: {
+          value: {
+            code: `"${getMagicString('1')}"`,
+            type: 'single',
+            bindingType: 'expression',
+          },
+        },
+      });
+      const json = baseComponent({
+        children: [node],
+        targetBlocks: {
+          '1': targetBlock({
+            react: { code: 'reactValue' },
+            reactNative: { code: 'rnValue' },
+          }),
+        },
+      });
+      processTargetBlocks('reactNative')().json!.pre!(json);
+      expect(json.children[0].bindings.value?.code).toBe('rnValue');
+    });
+
+    it('drops the placeholder when the block has only react and no default (requiresDefault=false)', () => {
+      const node = createNode({
+        bindings: {
+          v: {
+            code: `prefix + "${getMagicString('1')}" + suffix`,
+            type: 'single',
+            bindingType: 'expression',
+          },
+        },
+      });
+      const json = baseComponent({
+        children: [node],
+        targetBlocks: {
+          '1': targetBlock({ react: { code: 'reactOnly' } }),
+        },
+      });
+      processTargetBlocks('reactNative')().json!.pre!(json);
+      // No reactNative key, no default → placeholder dropped to empty.
+      expect(json.children[0].bindings.v?.code).toBe('prefix +  + suffix');
+    });
+
+    it('throws with the active target name when requiresDefault=true and no match', () => {
+      const node = createNode({
+        bindings: {
+          v: {
+            code: `"${getMagicString('1')}"`,
+            type: 'single',
+            bindingType: 'expression',
+          },
+        },
+      });
+      const json = baseComponent({
+        name: 'RN',
+        children: [node],
+        targetBlocks: {
+          '1': targetBlock({
+            react: { code: 'reactOnly' },
+            settings: { requiresDefault: true },
+          }),
+        },
+      });
+      expect(() => processTargetBlocks('reactNative')().json!.pre!(json)).toThrow(
+        /target "reactNative".*no default value was set/,
+      );
+    });
+  });
 });

@@ -1,4 +1,4 @@
-import type { Plugin, TargetBlockDefinition } from '../../types';
+import type { Plugin, ReactFamilyTarget, TargetBlockDefinition } from '../../types';
 import { createSingleBinding } from '../bindings';
 import {
   getIdFromMatch,
@@ -7,15 +7,19 @@ import {
 } from '../use-target-magic';
 import { createCodeProcessorPlugin } from './process-code';
 
-const TARGET = 'react' as const;
-
-const getBlockForTarget = (targetBlock: TargetBlockDefinition) =>
-  targetBlock[TARGET] || targetBlock['default'];
+const getBlockForTarget = (targetBlock: TargetBlockDefinition, target: ReactFamilyTarget) =>
+  targetBlock[target] || targetBlock['default'];
 
 /**
- * Resolves `useTarget()` magic placeholders for the React target.
+ * Resolves `useTarget()` magic placeholders for the named target.
+ *
+ * The `target` arg picks which key to read from each component's `targetBlocks` map.
+ * `'react'` is the default (for `componentToReact`); `'reactNative'` is passed by the
+ * `componentToReactNative` flow so author-supplied `reactNative: ...` blocks resolve
+ * correctly. If the chosen target has no entry and `targetBlocks.<id>.default` is also
+ * missing, the placeholder is dropped (or throws when `settings.requiresDefault`).
  */
-export const processTargetBlocks = (): Plugin => {
+export const processTargetBlocks = (target: ReactFamilyTarget = 'react'): Plugin => {
   const plugin = createCodeProcessorPlugin(
     (codeType, json, node) => (code, key) => {
       if (codeType === 'properties') {
@@ -44,12 +48,12 @@ export const processTargetBlocks = (): Plugin => {
           throw new Error(`Could not find \`useTarget()\` value in "${json.name}".`);
         }
 
-        const block = getBlockForTarget(targetBlock);
+        const block = getBlockForTarget(targetBlock, target);
 
         if (!block) {
           if (targetBlock.settings.requiresDefault) {
             throw new Error(
-              `Could not find \`useTarget()\` value in "${json.name}" for target "${TARGET}", and no default value was set.`,
+              `Could not find \`useTarget()\` value in "${json.name}" for target "${target}", and no default value was set.`,
             );
           } else {
             code = code.replaceAll(m, '');
