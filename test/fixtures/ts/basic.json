@@ -1,0 +1,105 @@
+{
+  "@type": "@builder.io/mitosis/component",
+  "imports": [],
+  "exports": {
+    "DEFAULT_VALUES": {
+      "code": "export const DEFAULT_VALUES = {\n  name: 'Steve'\n};",
+      "isFunction": false,
+      "usedInLocal": true
+    }
+  },
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "name": {
+      "code": "'Steve'",
+      "type": "property",
+      "propertyType": "normal"
+    },
+    "underscore_fn_name": {
+      "code": "underscore_fn_name() {\n  return 'bar';\n}",
+      "type": "method"
+    },
+    "age": {
+      "code": "1",
+      "type": "property",
+      "propertyType": "normal",
+      "typeParameter": "number"
+    },
+    "sports": {
+      "code": "['']",
+      "type": "property",
+      "propertyType": "normal",
+      "typeParameter": "Array<string>"
+    }
+  },
+  "children": [
+    {
+      "@type": "@builder.io/mitosis/node",
+      "name": "div",
+      "meta": {},
+      "scope": {},
+      "properties": {
+        "class": "test"
+      },
+      "bindings": {
+        "css": {
+          "code": "{\n  padding: '10px'\n}",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": [
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "input",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "value": {
+              "code": "DEFAULT_VALUES.name || state.name",
+              "bindingType": "expression",
+              "type": "single"
+            },
+            "onChange": {
+              "code": "state.name = myEvent.target.value",
+              "arguments": [
+                "myEvent"
+              ],
+              "bindingType": "function",
+              "type": "single"
+            }
+          },
+          "children": []
+        },
+        {
+          "@type": "@builder.io/mitosis/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": {
+            "_text": "\n      Hello! I can run in React, Vue, Solid, or Liquid! &gt;\n    "
+          },
+          "bindings": {},
+          "children": []
+        }
+      ]
+    }
+  ],
+  "context": {
+    "get": {},
+    "set": {}
+  },
+  "subComponents": [],
+  "name": "MyBasicComponent",
+  "hooks": {
+    "onMount": [],
+    "onEvent": []
+  },
+  "types": [
+    "export interface MyBasicComponentProps {\n  id: string;\n}"
+  ],
+  "propsTypeRef": "MyBasicComponentProps"
+}
