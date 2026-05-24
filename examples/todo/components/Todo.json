@@ -1,0 +1,107 @@
+{
+  "@type": "jsx-emitter/component",
+  "name": "Todo",
+  "imports": [],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {},
+  "context": { "get": {}, "set": {} },
+  "subComponents": [],
+  "hooks": { "onMount": [], "onEvent": [] },
+  "types": [
+    "export type TodoProps = {\n  text: string;\n  completed: boolean;\n  onToggle: () => void;\n  onRemove: () => void;\n};"
+  ],
+  "propsTypeRef": "TodoProps",
+  "children": [
+    {
+      "@type": "jsx-emitter/node",
+      "name": "li",
+      "meta": {},
+      "scope": {},
+      "properties": {},
+      "bindings": {
+        "class": {
+          "code": "props.completed ? 'completed' : ''",
+          "bindingType": "expression",
+          "type": "single"
+        }
+      },
+      "children": [
+        {
+          "@type": "jsx-emitter/node",
+          "name": "input",
+          "meta": {},
+          "scope": {},
+          "properties": { "type": "checkbox" },
+          "bindings": {
+            "checked": {
+              "code": "props.completed",
+              "bindingType": "expression",
+              "type": "single"
+            },
+            "onChange": {
+              "code": "props.onToggle()",
+              "arguments": ["event"],
+              "bindingType": "function",
+              "type": "single"
+            }
+          },
+          "children": []
+        },
+        {
+          "@type": "jsx-emitter/node",
+          "name": "label",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {},
+          "children": [
+            {
+              "@type": "jsx-emitter/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "_text": {
+                  "code": "props.text",
+                  "bindingType": "expression",
+                  "type": "single"
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "@type": "jsx-emitter/node",
+          "name": "button",
+          "meta": {},
+          "scope": {},
+          "properties": { "class": "remove" },
+          "bindings": {
+            "onClick": {
+              "code": "props.onRemove()",
+              "arguments": ["event"],
+              "bindingType": "function",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "jsx-emitter/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": { "_text": "x" },
+              "bindings": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

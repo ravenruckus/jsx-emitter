@@ -1,0 +1,220 @@
+{
+  "@type": "jsx-emitter/component",
+  "name": "Todos",
+  "imports": [
+    {
+      "imports": { "Todo": "default" },
+      "path": "./Todo",
+      "importKind": "value"
+    }
+  ],
+  "exports": {},
+  "inputs": [],
+  "meta": {},
+  "refs": {},
+  "state": {
+    "items": {
+      "code": "props.initial || []",
+      "type": "property",
+      "propertyType": "normal",
+      "typeParameter": "TodoItem[]"
+    },
+    "draft": {
+      "code": "''",
+      "type": "property",
+      "propertyType": "normal",
+      "typeParameter": "string"
+    },
+    "addTodo": {
+      "code": "addTodo() {\n  const text = state.draft.trim();\n  if (!text) return;\n  state.items = [...state.items, { text, completed: false }];\n  state.draft = '';\n}",
+      "type": "method"
+    },
+    "toggleTodo": {
+      "code": "toggleTodo(index: number) {\n  state.items = state.items.map((item, i) =>\n    i === index ? { ...item, completed: !item.completed } : item,\n  );\n}",
+      "type": "method"
+    },
+    "removeTodo": {
+      "code": "removeTodo(index: number) {\n  state.items = state.items.filter((_, i) => i !== index);\n}",
+      "type": "method"
+    }
+  },
+  "context": { "get": {}, "set": {} },
+  "subComponents": [],
+  "hooks": { "onMount": [], "onEvent": [] },
+  "types": [
+    "export type TodoItem = { text: string; completed: boolean };",
+    "export type TodosProps = { initial?: TodoItem[] };"
+  ],
+  "propsTypeRef": "TodosProps",
+  "children": [
+    {
+      "@type": "jsx-emitter/node",
+      "name": "section",
+      "meta": {},
+      "scope": {},
+      "properties": { "class": "todos" },
+      "bindings": {},
+      "children": [
+        {
+          "@type": "jsx-emitter/node",
+          "name": "h1",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {},
+          "children": [
+            {
+              "@type": "jsx-emitter/node",
+              "name": "div",
+              "meta": {},
+              "scope": {},
+              "properties": { "_text": "Todos" },
+              "bindings": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "@type": "jsx-emitter/node",
+          "name": "div",
+          "meta": {},
+          "scope": {},
+          "properties": { "class": "add" },
+          "bindings": {},
+          "children": [
+            {
+              "@type": "jsx-emitter/node",
+              "name": "input",
+              "meta": {},
+              "scope": {},
+              "properties": { "type": "text" },
+              "bindings": {
+                "value": {
+                  "code": "state.draft",
+                  "bindingType": "expression",
+                  "type": "single"
+                },
+                "onChange": {
+                  "code": "{\n  state.draft = event.target.value;\n}",
+                  "arguments": ["event"],
+                  "bindingType": "function",
+                  "type": "single"
+                },
+                "onKeyDown": {
+                  "code": "{\n  if (event.key === 'Enter') state.addTodo();\n}",
+                  "arguments": ["event"],
+                  "bindingType": "function",
+                  "type": "single"
+                }
+              },
+              "children": []
+            },
+            {
+              "@type": "jsx-emitter/node",
+              "name": "button",
+              "meta": {},
+              "scope": {},
+              "properties": {},
+              "bindings": {
+                "onClick": {
+                  "code": "state.addTodo()",
+                  "arguments": ["event"],
+                  "bindingType": "function",
+                  "type": "single"
+                }
+              },
+              "children": [
+                {
+                  "@type": "jsx-emitter/node",
+                  "name": "div",
+                  "meta": {},
+                  "scope": {},
+                  "properties": { "_text": "Add" },
+                  "bindings": {},
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "jsx-emitter/node",
+          "name": "Show",
+          "meta": {},
+          "scope": {},
+          "properties": {},
+          "bindings": {
+            "when": {
+              "code": "state.items.length > 0",
+              "bindingType": "expression",
+              "type": "single"
+            }
+          },
+          "children": [
+            {
+              "@type": "jsx-emitter/node",
+              "name": "ul",
+              "meta": {},
+              "scope": {},
+              "properties": { "class": "todo-list" },
+              "bindings": {},
+              "children": [
+                {
+                  "@type": "jsx-emitter/node",
+                  "name": "For",
+                  "meta": {},
+                  "scope": {
+                    "forName": "item",
+                    "indexName": "index"
+                  },
+                  "properties": {},
+                  "bindings": {
+                    "each": {
+                      "code": "state.items",
+                      "bindingType": "expression",
+                      "type": "single"
+                    }
+                  },
+                  "children": [
+                    {
+                      "@type": "jsx-emitter/node",
+                      "name": "Todo",
+                      "meta": {},
+                      "scope": {},
+                      "properties": {},
+                      "bindings": {
+                        "text": {
+                          "code": "item.text",
+                          "bindingType": "expression",
+                          "type": "single"
+                        },
+                        "completed": {
+                          "code": "item.completed",
+                          "bindingType": "expression",
+                          "type": "single"
+                        },
+                        "onToggle": {
+                          "code": "state.toggleTodo(index)",
+                          "arguments": ["event"],
+                          "bindingType": "function",
+                          "type": "single"
+                        },
+                        "onRemove": {
+                          "code": "state.removeTodo(index)",
+                          "arguments": ["event"],
+                          "bindingType": "function",
+                          "type": "single"
+                        }
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
