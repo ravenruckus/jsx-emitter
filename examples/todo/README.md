@@ -24,15 +24,19 @@ that owns the list state and renders one `Todo` per item.
 
 ## Running it
 
-From the package root:
+From the package root, build once so the package resolves under `dist/`,
+then run the example:
 
 ```sh
+npm run build
 npx tsx examples/todo/build.ts
 ```
 
 This regenerates `output/Todo.tsx` and `output/Todos.tsx`. The build
-script imports `componentToReact` from `../../src/index` (the in-repo
-source) so no prior `npm run build` is required.
+script imports `componentToReact` from `jsx-emitter` — the exact import a
+real consumer writes — which Node resolves via the package's own
+`exports` field (self-referencing). That keeps the example correct even
+once it's published under `dist/examples/`.
 
 ## What's in each file
 

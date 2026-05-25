@@ -3,14 +3,31 @@
   "version": "0.0.0",
   "description": "Standalone JSON-to-React generator. Compiles a structured JSON component representation into React source code.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ravenruckus/jsx-emitter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ravenruckus/jsx-emitter/issues"
+  },
+  "homepage": "https://github.com/ravenruckus/jsx-emitter#readme",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./fixtures/*": "./dist/fixtures/*",
+    "./examples/*": "./dist/examples/*"
+  },
   "files": [
     "dist",
     "README.md"
   ],
   "scripts": {
-    "build": "tsc --build tsconfig.build.json",
+    "build": "tsc --build tsconfig.build.json && tsx scripts/copy-build-assets.ts",
+    "prepare": "npm run build",
     "clean": "rimraf dist",
     "test": "vitest run",
     "test:watch": "vitest",
