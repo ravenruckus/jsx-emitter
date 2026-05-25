@@ -13,7 +13,7 @@
  */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
-import { componentToReact, type JsonComponent } from '../../src/index';
+import { componentToReact, type JsonComponent } from 'jsx-emitter';
 
 const here = resolve(__dirname);
 const componentsDir = resolve(here, 'components');
