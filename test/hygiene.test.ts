@@ -65,8 +65,7 @@ describe('hygiene: no upstream-toolchain references in package metadata', () => 
 // independent of the upstream toolchain so Phase 7's "delete the dep + run
 // build/test green" check passes without source edits.
 //
-// The two allowlisted paths are deleted in Phase 7 (per `jsx-emitter-plan.md`
-// §Phase 7), at which point this guard becomes vacuous and can be removed.
+// The two allowlisted paths are deleted in Phase 7, at which point this guard becomes vacuous and can be removed.
 const PHASE_4_ALLOWED_IMPORTERS = new Set<string>([
   'test/parity.test.ts',
   'scripts/extract-fixtures.ts',
